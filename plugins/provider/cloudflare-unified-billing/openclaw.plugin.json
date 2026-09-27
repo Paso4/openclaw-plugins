@@ -1,0 +1,71 @@
+{
+  "id": "cloudflare-unified-billing",
+  "name": "Cloudflare Unified Billing (CF AI Gateway)",
+  "version": "2026.9.6",
+  "description": "Full model catalog for Cloudflare AI Gateway with unified billing support. Exposes 150+ models from Google Gemini, Anthropic Claude, OpenAI, xAI (Grok), DeepSeek, Alibaba Qwen, MiniMax, Moonshot Kimi, Workers AI frontier models, and more through a single gateway endpoint.",
+  "providers": ["cloudflare-unified-billing"],
+  "modelSupport": {
+    "modelPrefixes": [
+      "google/",
+      "google-vertex-ai/",
+      "anthropic/",
+      "openai/",
+      "xai/",
+      "groq/",
+      "mistral/",
+      "cohere/",
+      "perplexity/",
+      "workers-ai/",
+      "deepseek/",
+      "cerebras/",
+      "baseten/",
+      "parallel/",
+      "alibaba/",
+      "moonshotai/",
+      "minimax/"
+    ]
+  },
+  "setup": {
+    "providers": [
+      {
+        "id": "cloudflare-unified-billing",
+        "envVars": [
+          "CLOUDFLARE_AI_GATEWAY_API_KEY",
+          "CLOUDFLARE_API_TOKEN",
+          "CF_AI_GATEWAY_ACCOUNT_ID",
+          "CF_AI_GATEWAY_GATEWAY_ID",
+          "CF_AI_GATEWAY_CUSTOM_DOMAIN",
+          "CF_ACCESS_TOKEN",
+          "CF_ACCESS_CLIENT_ID",
+          "CF_ACCESS_CLIENT_SECRET"
+        ],
+        "requiresRuntime": false
+      }
+    ]
+  },
+  "providerAuthEnvVars": {
+    "cloudflare-unified-billing": ["CLOUDFLARE_AI_GATEWAY_API_KEY"]
+  },
+  "providerAuthAliases": {
+    "cloudflare-unified-billing": "cloudflare-ai-gateway"
+  },
+  "contracts": {
+    "webSearchProviders": ["cloudflare-ai-gateway-perplexity"],
+    "webFetchProviders": ["cloudflare-ai-gateway-google"],
+    "imageGenerationProviders": ["cloudflare-ai-gateway-google-images"]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "cfAiGatewayApiKey": {
+        "type": "string",
+        "description": "AI Gateway credential used by the web search, web fetch, and image generation capabilities."
+      },
+      "customDomain": {
+        "type": "string",
+        "description": "AI Gateway custom domain (for example ai.example.com). Routes requests through the gateway endpoint and enables Cloudflare Access identity-aware controls for User Insights."
+      }
+    }
+  }
+}

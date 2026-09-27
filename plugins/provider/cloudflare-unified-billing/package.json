@@ -1,0 +1,82 @@
+{
+  "name": "@paso4/cloudflare-unified-billing",
+  "version": "2026.9.6",
+  "description": "OpenClaw provider plugin for Cloudflare AI Gateway with full model catalog and unified billing support",
+  "keywords": [
+    "ai-gateway",
+    "claude",
+    "cloudflare",
+    "gemini",
+    "gpt",
+    "openclaw",
+    "plugin",
+    "provider"
+  ],
+  "license": "LicenseRef-Paso4-Open-Plugin-1.0",
+  "author": "Paso4",
+  "files": [
+    "dist",
+    "openclaw.plugin.json"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./models.js": {
+      "types": "./dist/models.d.ts",
+      "import": "./dist/models.js"
+    }
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir dist --target node --format esm --external openclaw && bun build ./src/onboard.ts --outdir dist --target node --format esm --external openclaw && bun build ./src/models.ts --outdir dist --target node --format esm --external openclaw && cp openclaw.plugin.json dist/",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run src",
+    "test:watch": "vitest watch src",
+    "test:coverage": "vitest run --coverage src",
+    "test:integration": "vitest run tests/integration",
+    "test:all": "bun run test && bun run test:integration"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  },
+  "peerDependencies": {
+    "openclaw": "catalog:"
+  },
+  "openclaw": {
+    "plugin": true,
+    "setupEntry": "./dist/onboard.js",
+    "setup": {
+      "providers": [
+        {
+          "id": "cloudflare-unified-billing",
+          "envVars": [
+            "CLOUDFLARE_AI_GATEWAY_API_KEY",
+            "CLOUDFLARE_API_TOKEN",
+            "CF_AI_GATEWAY_ACCOUNT_ID",
+            "CF_AI_GATEWAY_GATEWAY_ID",
+            "CF_AI_GATEWAY_CUSTOM_DOMAIN",
+            "CF_ACCESS_TOKEN",
+            "CF_ACCESS_CLIENT_ID",
+            "CF_ACCESS_CLIENT_SECRET"
+          ],
+          "requiresRuntime": false
+        }
+      ]
+    },
+    "install": {
+      "defaultChoice": "local",
+      "allowInvalidConfigRecovery": "true"
+    },
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "providers": [
+      "cloudflare-unified-billing"
+    ],
+    "minOpenclawVersion": "2026.9.6"
+  }
+}

@@ -1,0 +1,128 @@
+name: Test
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+  workflow_dispatch:
+
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Repo-wide gates: formatting, lint, and the global version policy.
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check formatting
+        run: bun run format:check
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Verify global version policy
+        run: bun run verify:versions
+
+      - name: Type check
+        run: bun run typecheck
+
+  # Only the plugins touched by this change run their suites.
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.changed.outputs.plugins }}
+      any: ${{ steps.changed.outputs.any }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Detect changed plugins
+        id: changed
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          set -euo pipefail
+          PLUGINS="$(bun scripts/changed-plugins.mjs --base "$BASE" --head "${{ github.sha }}")"
+          PLUGINS="${PLUGINS:-[]}"
+          {
+            echo "plugins<<PLUGINS_JSON"
+            echo "$PLUGINS"
+            echo "PLUGINS_JSON"
+          } >> "$GITHUB_OUTPUT"
+          if [ "$PLUGINS" = "[]" ]; then
+            echo "any=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "any=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  test:
+    needs: detect
+    if: ${{ needs.detect.outputs.any == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    name: test / ${{ matrix.plugin.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: ${{ fromJSON(needs.detect.outputs.plugins) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build plugin
+        run: bun run --cwd "${{ matrix.plugin.dir }}" build
+
+      - name: Unit tests
+        run: bun run --cwd "${{ matrix.plugin.dir }}" test
+
+      - name: Resolve OpenClaw version
+        id: openclaw
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        run: echo "version=$(bun scripts/openclaw-version.mjs)" >> "$GITHUB_OUTPUT"
+
+      # Live integration tests make real, paid provider calls. They run only on
+      # develop pushes (never on PRs) and only when credentials are configured.
+      - name: Install OpenClaw CLI for live tests
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        run: npm install -g "openclaw@${{ steps.openclaw.outputs.version }}"
+
+      - name: Integration tests (live)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        env:
+          PLUGIN_LIVE_TESTS: 'true'
+          CLOUDFLARE_AI_GATEWAY_API_KEY: ${{ secrets.E2E_CLOUDFLARE_AI_GATEWAY_API_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.E2E_CLOUDFLARE_AI_GATEWAY_API_KEY }}
+          CF_AI_GATEWAY_ACCOUNT_ID: ${{ secrets.E2E_CF_AI_GATEWAY_ACCOUNT_ID }}
+          CF_AI_GATEWAY_GATEWAY_ID: ${{ secrets.E2E_CF_AI_GATEWAY_GATEWAY_ID }}
+          RUN_REASONING_TESTS: 'true'
+          RUN_VISION_TESTS: 'true'
+        run: bun run --cwd "${{ matrix.plugin.dir }}" test:integration

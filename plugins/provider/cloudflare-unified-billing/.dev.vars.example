@@ -1,0 +1,22 @@
+# Cloudflare AI Gateway credentials for live integration tests.
+# Copy to `.dev.vars` (gitignored) and fill in. Never commit real credentials.
+CLOUDFLARE_AI_GATEWAY_API_KEY=
+CLOUDFLARE_API_TOKEN=
+CF_AI_GATEWAY_ACCOUNT_ID=
+CF_AI_GATEWAY_GATEWAY_ID=
+
+# Optional: Cloudflare Access-protected custom domain
+# CF_AI_GATEWAY_CUSTOM_DOMAIN=
+# CF_ACCESS_TOKEN=
+# CF_ACCESS_CLIENT_ID=
+# CF_ACCESS_CLIENT_SECRET=
+
+# Live integration tests make paid provider calls and only run when this is
+# `true`. Never set it in PR CI — only the develop CI job and intentional local
+# runs should spend credits.
+PLUGIN_LIVE_TESTS=false
+
+# Optional depth knobs for the live suite
+# SMOKE_TESTS_ONLY=true
+# RUN_REASONING_TESTS=true
+# RUN_VISION_TESTS=true

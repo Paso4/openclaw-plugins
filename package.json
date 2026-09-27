@@ -1,0 +1,47 @@
+{
+  "name": "paso4-openclaw-plugins",
+  "version": "2026.9.6",
+  "private": true,
+  "description": "Paso4 public OpenClaw plugins — reusable provider, channel, tool, CLI-backend, and feature plugins published on ClawHub.",
+  "keywords": [
+    "clawhub",
+    "openclaw",
+    "paso4",
+    "plugins"
+  ],
+  "license": "LicenseRef-Paso4-Open-Plugin-1.0",
+  "workspaces": [
+    "plugins/*/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "list:plugins": "bun scripts/list-plugins.mjs",
+    "changed:plugins": "bun scripts/changed-plugins.mjs",
+    "sync:versions": "bun scripts/sync-versions.mjs",
+    "verify:versions": "bun scripts/verify-versions.mjs",
+    "resolve:version": "bun scripts/resolve-release-version.mjs",
+    "build": "bun scripts/run-in-plugins.mjs build",
+    "test": "bun scripts/run-in-plugins.mjs test",
+    "test:integration": "bun scripts/run-in-plugins.mjs test:integration",
+    "typecheck": "bun scripts/run-in-plugins.mjs typecheck",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint plugins scripts",
+    "changeset": "changeset",
+    "version": "changeset version && bun scripts/sync-versions.mjs \"$(bun scripts/resolve-release-version.mjs)\"",
+    "verify": "bun run format:check && bun run lint && bun run verify:versions && bun run typecheck && bun run test"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.9",
+    "@types/bun": "^1.4.2",
+    "oxfmt": "0.70.0",
+    "oxlint": "1.85.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  },
+  "catalog": {
+    "openclaw": "^2026.9.6",
+    "typescript": "^7.0.2",
+    "@types/bun": "latest"
+  }
+}

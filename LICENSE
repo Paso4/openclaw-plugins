@@ -1,0 +1,99 @@
+PASO4 OPEN PLUGIN LICENSE
+Version 1.0, September 2026
+
+Copyright (c) 2026 Paso4. All rights reserved.
+
+This license governs the use of the software, plugins, and associated source
+code and documentation (the "Software") published in this repository.
+
+1. NON-COMMERCIAL LICENSE
+
+   Subject to the conditions in Section 3, Paso4 grants you a worldwide,
+   royalty-free, non-exclusive, non-transferable license to use, copy, modify,
+   merge, publish, distribute, and sublicense the Software for Non-Commercial
+   Purposes only.
+
+   "Non-Commercial Purpose" means a purpose that is not primarily intended for
+   or directed toward commercial advantage or monetary compensation. Personal
+   use, evaluation, research, education, and internal non-revenue use are
+   Non-Commercial Purposes.
+
+2. COMMERCIAL USE BY AUTHORIZED VENDORS
+
+   Commercial use of the Software is NOT granted by this license to the general
+   public. "Commercial Use" means any use of the Software, in whole or in part,
+   that is primarily intended for or directed toward commercial advantage or
+   monetary compensation, including use in or as part of a product or service
+   offered for sale, or use to operate a revenue-generating service.
+
+   Commercial Use is permitted only by vendors and partners that Paso4 has
+   expressly authorized in writing to use the Software for commercial purposes
+   ("Authorized Vendors"), and only within the scope of that written
+   authorization. To request commercial authorization, contact
+   plugins@paso4.io.
+
+   Nothing in this license obligates Paso4 to grant commercial authorization,
+   and any such authorization may be conditioned, limited, or revoked in
+   accordance with its terms.
+
+3. CONDITIONS
+
+   Your rights under this license are conditioned on the following:
+
+   a. You must retain, in all copies and substantial portions of the Software,
+      this license, the copyright notice above, and any attribution notices.
+
+   b. You must clearly mark any modified versions of the Software as modified,
+      and you may not misrepresent the origin of the Software.
+
+   c. You may not use the names, trademarks, service marks, or logos of Paso4
+      except as required for reasonable and customary use in describing the
+      origin of the Software and reproducing the content of this license.
+
+   d. You may not remove or circumvent any license, copyright, or technological
+      protection notices included with the Software.
+
+   e. Distributing the Software (or a derivative of it) does not extend any
+      commercial rights to third parties. Any Commercial Use by a recipient
+      requires that recipient to be an Authorized Vendor.
+
+4. NO CONTRIBUTIONS WITHOUT LICENSE
+
+   Unless Paso4 has agreed otherwise in writing, you may not submit
+   contributions for inclusion in the Software. Any contribution you do submit
+   is, by submission, licensed to Paso4 under the terms of this license,
+   including the right for Paso4 to relicense it.
+
+5. TERMINATION
+
+   This license and the rights granted under it terminate automatically if you
+   breach any of its terms. For Authorized Vendors, any use exceeding the scope
+   of the written authorization terminates the commercial grant. Upon
+   termination you must stop all use and distribution of the Software. Sections
+   3, 6, 7, and 8 survive termination.
+
+6. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. YOU BEAR THE
+   ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE.
+
+7. LIMITATION OF LIABILITY
+
+   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL PASO4 OR
+   ITS CONTRIBUTORS OR LICENSORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, WITHOUT LIMITATION,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+   OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE SOFTWARE, EVEN IF ADVISED
+   OF THE POSSIBILITY OF SUCH DAMAGE.
+
+8. GOVERNING LAW
+
+   This license is governed by the laws of the jurisdiction in which Paso4 is
+   established, without regard to its conflict of law provisions. Nothing in
+   this license limits any rights you may have under mandatory local law.
+
+SPDX-License-Identifier: LicenseRef-Paso4-Open-Plugin-1.0

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "import/no-unassigned-import": "off",
+    "eslint/no-underscore-dangle": ["warn", { "allow": ["__dirname"] }],
+    "unicorn/no-array-sort": "off",
+    "vitest/no-conditional-expect": "off",
+    "vitest/expect-expect": "off"
+  },
+  "ignorePatterns": ["dist", "node_modules", ".opencode", "*.d.ts", ".github", "skills"]
+}

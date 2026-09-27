@@ -1,0 +1,69 @@
+name: Publish
+
+on:
+  # CD runs when a Release is published (created by release.yml).
+  release:
+    types: [published]
+  # Manual dry-run / targeted publish.
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only — validate and inspect without publishing'
+        type: boolean
+        default: true
+      plugin:
+        description: 'Publish only this plugin (directory name); empty = all'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.list.outputs.plugins }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Resolve plugin matrix
+        id: list
+        run: |
+          set -euo pipefail
+          PLUGINS="$(bun scripts/list-plugins.mjs --matrix --filter "${{ inputs.plugin }}")"
+          {
+            echo "plugins<<PLUGINS_JSON"
+            echo "$PLUGINS"
+            echo "PLUGINS_JSON"
+          } >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: matrix
+    if: ${{ needs.matrix.outputs.plugins != '[]' }}
+    name: publish / ${{ matrix.plugin.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: ${{ fromJSON(needs.matrix.outputs.plugins) }}
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    # Upstream ClawHub CD workflow — publishes a monorepo package to ClawHub.
+    # Pinned to a reviewed commit of openclaw/clawhub's reusable workflow.
+    uses: openclaw/clawhub/.github/workflows/package-publish.yml@2be984c2eb580a562a8a530ad65e5577c9e1326a
+    with:
+      source: ${{ github.repository }}
+      source_path: ${{ matrix.plugin.dir }}
+      version: ${{ matrix.plugin.version }}
+      tags: latest
+      dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+      inspector_artifact_name: plugin-inspector-${{ matrix.plugin.name }}
+      publish_json_artifact_name: clawhub-publish-${{ matrix.plugin.name }}
+    secrets:
+      clawhub_token: ${{ secrets.CLAWHUB_TOKEN }}

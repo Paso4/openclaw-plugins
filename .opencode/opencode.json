@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "formatter": true,
+  "model": "opencode-go/deepseek-v4-pro",
+  "small_model": "opencode-go/deepseek-v4.1-flash",
+  "instructions": ["AGENTS.md", "skills/openclaw-migration/SKILL.md"],
+  "agent": {
+    "openclaw-updater": {
+      "description": "Migrates the plugins monorepo to a new OpenClaw release and refreshes the Cloudflare unified-billing model catalog, following the openclaw-migration and model-catalog-research skills.",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4.1-flash",
+      "prompt": "{file:../.github/agents/openclaw-updater.md}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "permission": {
+        "skill": "allow"
+      }
+    }
+  }
+}

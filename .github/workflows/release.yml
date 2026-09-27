@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+          fetch-tags: true
+          # A PAT (not GITHUB_TOKEN) so publishing the Release triggers publish.yml.
+          token: ${{ secrets.RELEASE_PAT }}
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Apply changesets and stamp the global version
+        id: version
+        run: |
+          set -euo pipefail
+          bun run version
+          VERSION="$(bun -e "console.log(JSON.parse(await Bun.file('package.json').text()).version)")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Releasing v$VERSION"
+
+      - name: Commit, tag, and push
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(release): v${VERSION}"
+          else
+            echo "No file changes to commit (version unchanged)."
+          fi
+          git tag "v${VERSION}"
+          git push origin "HEAD:develop"
+          git push origin "v${VERSION}"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+        run: |
+          gh release create "v${{ steps.version.outputs.version }}" \
+            --title "v${{ steps.version.outputs.version }}" \
+            --generate-notes

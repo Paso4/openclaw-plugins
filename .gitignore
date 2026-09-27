@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment files (never commit live credentials)
+.dev.vars
+.env
+.env.*
+!.env.example
+!.dev.vars.example
+
+# Logs / test artifacts
+*.log
+coverage/
+test.out
+
+# Editor / OS
+.idea/
+.vscode/launch.json
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
