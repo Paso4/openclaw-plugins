@@ -64,6 +64,22 @@ for (const plugin of plugins) {
   pkg.version = version;
   if (pkg.openclaw && typeof pkg.openclaw === 'object') {
     pkg.openclaw.minOpenclawVersion = base;
+    // ClawHub requires external code plugins to declare the plugin API range
+    // and the OpenClaw build they were tested against.
+    pkg.openclaw.compat = {
+      ...pkg.openclaw.compat,
+      pluginApi: `>=${base}`,
+      minGatewayVersion: base,
+    };
+    pkg.openclaw.build = {
+      ...pkg.openclaw.build,
+      openclawVersion: base,
+      pluginSdkVersion: base,
+    };
+    pkg.openclaw.install = {
+      ...pkg.openclaw.install,
+      minHostVersion: base,
+    };
   }
   writeJson(pkgPath, pkg);
 

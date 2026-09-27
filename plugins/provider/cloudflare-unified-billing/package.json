@@ -49,6 +49,17 @@
   "openclaw": {
     "plugin": true,
     "setupEntry": "./dist/onboard.js",
+    "extensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.9.6",
+      "minGatewayVersion": "2026.9.6"
+    },
+    "build": {
+      "openclawVersion": "2026.9.6",
+      "pluginSdkVersion": "2026.9.6"
+    },
     "setup": {
       "providers": [
         {
@@ -68,12 +79,10 @@
       ]
     },
     "install": {
-      "defaultChoice": "local",
+      "defaultChoice": "clawhub",
+      "minHostVersion": "2026.9.6",
       "allowInvalidConfigRecovery": "true"
     },
-    "extensions": [
-      "./dist/index.js"
-    ],
     "providers": [
       "cloudflare-unified-billing"
     ],

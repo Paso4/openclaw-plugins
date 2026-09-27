@@ -63,6 +63,35 @@ for (const plugin of plugins) {
     );
   }
 
+  // ClawHub requires external code plugins to declare these OpenClaw fields.
+  const compat = pkg.openclaw?.compat;
+  if (compat?.pluginApi !== `>=${openclawVersion}`) {
+    errors.push(
+      `${plugin.dir}/package.json openclaw.compat.pluginApi ${JSON.stringify(compat?.pluginApi)} != ">=${openclawVersion}"`,
+    );
+  }
+  if (compat?.minGatewayVersion !== openclawVersion) {
+    errors.push(
+      `${plugin.dir}/package.json openclaw.compat.minGatewayVersion ${JSON.stringify(compat?.minGatewayVersion)} != ${JSON.stringify(openclawVersion)}`,
+    );
+  }
+  const build = pkg.openclaw?.build;
+  if (build?.openclawVersion !== openclawVersion) {
+    errors.push(
+      `${plugin.dir}/package.json openclaw.build.openclawVersion ${JSON.stringify(build?.openclawVersion)} != ${JSON.stringify(openclawVersion)}`,
+    );
+  }
+  if (build?.pluginSdkVersion !== openclawVersion) {
+    errors.push(
+      `${plugin.dir}/package.json openclaw.build.pluginSdkVersion ${JSON.stringify(build?.pluginSdkVersion)} != ${JSON.stringify(openclawVersion)}`,
+    );
+  }
+  if (pkg.openclaw?.install?.minHostVersion !== openclawVersion) {
+    errors.push(
+      `${plugin.dir}/package.json openclaw.install.minHostVersion ${JSON.stringify(pkg.openclaw?.install?.minHostVersion)} != ${JSON.stringify(openclawVersion)}`,
+    );
+  }
+
   const manifestPath = join(REPO_ROOT, plugin.dir, 'openclaw.plugin.json');
   if (existsSync(manifestPath)) {
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
