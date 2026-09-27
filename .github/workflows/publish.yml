@@ -51,8 +51,50 @@ jobs:
             echo "any=true" >> "$GITHUB_OUTPUT"
           fi
 
-  publish:
+  # Build each plugin and pack the ClawHub artifact. The ClawHub publisher does
+  # not run build scripts, so the packed `dist/` must exist before publish.
+  build:
     needs: matrix
+    if: ${{ needs.matrix.outputs.any == 'true' }}
+    runs-on: ubuntu-latest
+    name: pack / ${{ matrix.plugin.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: ${{ fromJSON(needs.matrix.outputs.plugins) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build plugin
+        run: bun run --cwd "${{ matrix.plugin.dir }}" build
+
+      - name: Pack plugin
+        run: |
+          set -euo pipefail
+          DEST="$RUNNER_TEMP/clawpack/${{ matrix.plugin.name }}"
+          mkdir -p "$DEST"
+          (cd "${{ matrix.plugin.dir }}" && npm pack --ignore-scripts --pack-destination "$DEST")
+          ls -la "$DEST"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clawpack-${{ matrix.plugin.name }}
+          path: ${{ runner.temp }}/clawpack/${{ matrix.plugin.name }}/*.tgz
+          if-no-files-found: error
+
+  publish:
+    needs: [matrix, build]
     if: ${{ needs.matrix.outputs.any == 'true' }}
     name: publish / ${{ matrix.plugin.name }}
     strategy:
@@ -63,12 +105,13 @@ jobs:
       actions: read
       contents: read
       id-token: write
-    # Upstream ClawHub CD workflow — publishes a monorepo package to ClawHub.
-    # Pinned to a reviewed commit of openclaw/clawhub's reusable workflow.
+    # Upstream ClawHub CD workflow — validates and publishes the prebuilt
+    # ClawPack to ClawHub. Pinned to a reviewed commit of openclaw/clawhub.
     uses: openclaw/clawhub/.github/workflows/package-publish.yml@d871c764f2e50646b37119048d604b5992a81d2c
     with:
       source: ${{ github.repository }}
       source_path: ${{ matrix.plugin.dir }}
+      package_artifact_name: clawpack-${{ matrix.plugin.name }}
       version: ${{ matrix.plugin.version }}
       tags: latest
       dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
