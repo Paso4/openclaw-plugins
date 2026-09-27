@@ -77,5 +77,7 @@ definition lives in [`.github/agents/openclaw-updater.md`](./.github/agents/open
   integration tests run only on `develop` pushes with credentials present.
 - `release.yml` (manual) applies changesets, stamps the global version, tags
   `v<version>`, and creates the GitHub Release.
-- `publish.yml` runs when a Release is published and publishes each plugin to
-  ClawHub via `openclaw/clawhub`'s reusable `package-publish.yml`.
+- `publish.yml` runs when a Release is published (`workflow_dispatch` for
+  dry-runs): it builds + packs each plugin into an npm tarball and hands it to
+  `openclaw/clawhub`'s reusable `package-publish.yml`, since the ClawHub
+  publisher does not run build scripts. `dist/` is never committed.

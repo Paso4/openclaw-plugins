@@ -116,11 +116,11 @@ from existing tags.
 
 ## CI/CD
 
-| Workflow                                         | Trigger                  | What it does                                                                                                                         |
-| ------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| [`test.yml`](./.github/workflows/test.yml)       | push / PR to `develop`   | Detects changed plugins, runs each plugin's unit suite, and runs live integration tests (with secrets) only on `develop` pushes.     |
-| [`release.yml`](./.github/workflows/release.yml) | manual dispatch          | Applies changesets, stamps the global version, commits, tags `v<version>`, and creates the GitHub Release.                           |
-| [`publish.yml`](./.github/workflows/publish.yml) | GitHub Release published | Publishes every plugin to ClawHub through the upstream `openclaw/clawhub` reusable workflow (supports `workflow_dispatch` dry-runs). |
+| Workflow                                         | Trigger                  | What it does                                                                                                                                                                                           |
+| ------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`test.yml`](./.github/workflows/test.yml)       | push / PR to `develop`   | Detects changed plugins, runs each plugin's unit suite, and runs live integration tests (with secrets) only on `develop` pushes.                                                                       |
+| [`release.yml`](./.github/workflows/release.yml) | manual dispatch          | Applies changesets, stamps the global version, commits, tags `v<version>`, and creates the GitHub Release.                                                                                             |
+| [`publish.yml`](./.github/workflows/publish.yml) | GitHub Release published | Builds and packs each plugin (`dist/` is not committed), then validates and publishes the ClawPack with the upstream `openclaw/clawhub` reusable workflow. Also runs as a `workflow_dispatch` dry-run. |
 
 Required repository secrets: `CLAWHUB_TOKEN` (ClawHub publish), `RELEASE_PAT`
 (a PAT so the release event can trigger `publish.yml`), and the AI Gateway
