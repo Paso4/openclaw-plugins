@@ -31,6 +31,7 @@
   },
   "scripts": {
     "build": "bun build ./src/index.ts --outdir dist --target node --format esm --external openclaw && bun build ./src/onboard.ts --outdir dist --target node --format esm --external openclaw && bun build ./src/models.ts --outdir dist --target node --format esm --external openclaw && cp openclaw.plugin.json dist/",
+    "prepack": "bun run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run src",
     "test:watch": "vitest watch src",
