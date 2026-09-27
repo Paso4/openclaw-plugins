@@ -82,26 +82,14 @@ describe('cloudflare-unified-billing manifest auth configuration', () => {
     });
   });
 
-  describe('providerAuthEnvVars (kept for env detection)', () => {
-    it('has providerAuthEnvVars for environment variable detection', () => {
-      expect(manifestContent.providerAuthEnvVars).toBeDefined();
-      expect(manifestContent.providerAuthEnvVars['cloudflare-unified-billing']).toBeDefined();
+  describe('providerAuthEnvVars (moved to setup.providers)', () => {
+    it('no longer declares legacy providerAuthEnvVars', () => {
+      expect(manifestContent.providerAuthEnvVars).toBeUndefined();
     });
 
-    it('includes CLOUDFLARE_AI_GATEWAY_API_KEY env var', () => {
-      const envVars = manifestContent.providerAuthEnvVars?.['cloudflare-unified-billing'];
-      expect(envVars).toContain('CLOUDFLARE_AI_GATEWAY_API_KEY');
-    });
-
-    it('does not persist the REST transport alias as an auth profile credential', () => {
-      const envVars = manifestContent.providerAuthEnvVars?.['cloudflare-unified-billing'];
-      expect(envVars).not.toContain('CLOUDFLARE_API_TOKEN');
-    });
-
-    it('env vars enable auto-detection without auth profiles', () => {
-      // When auth profile not found, catalog can fallback to env vars
-      const envVars = manifestContent.providerAuthEnvVars?.['cloudflare-unified-billing'];
-      expect(envVars?.length).toBeGreaterThan(0);
+    it('setup.providers covers the provider auth env var', () => {
+      const providerSetup = manifestContent.setup?.providers?.[0];
+      expect(providerSetup?.envVars).toContain('CLOUDFLARE_AI_GATEWAY_API_KEY');
     });
   });
 

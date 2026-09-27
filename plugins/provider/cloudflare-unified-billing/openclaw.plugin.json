@@ -43,9 +43,6 @@
       }
     ]
   },
-  "providerAuthEnvVars": {
-    "cloudflare-unified-billing": ["CLOUDFLARE_AI_GATEWAY_API_KEY"]
-  },
   "providerAuthAliases": {
     "cloudflare-unified-billing": "cloudflare-ai-gateway"
   },
