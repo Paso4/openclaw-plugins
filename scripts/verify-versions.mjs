@@ -86,9 +86,9 @@ for (const plugin of plugins) {
       `${plugin.dir}/package.json openclaw.build.pluginSdkVersion ${JSON.stringify(build?.pluginSdkVersion)} != ${JSON.stringify(openclawVersion)}`,
     );
   }
-  if (pkg.openclaw?.install?.minHostVersion !== openclawVersion) {
+  if (pkg.openclaw?.install?.minHostVersion !== `>=${openclawVersion}`) {
     errors.push(
-      `${plugin.dir}/package.json openclaw.install.minHostVersion ${JSON.stringify(pkg.openclaw?.install?.minHostVersion)} != ${JSON.stringify(openclawVersion)}`,
+      `${plugin.dir}/package.json openclaw.install.minHostVersion ${JSON.stringify(pkg.openclaw?.install?.minHostVersion)} != ">=${openclawVersion}"`,
     );
   }
 

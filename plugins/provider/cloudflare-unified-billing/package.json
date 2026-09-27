@@ -81,7 +81,8 @@
     },
     "install": {
       "defaultChoice": "clawhub",
-      "minHostVersion": "2026.9.6",
+      "clawhubSpec": "@paso4/cloudflare-unified-billing",
+      "minHostVersion": ">=2026.9.6",
       "allowInvalidConfigRecovery": "true"
     },
     "providers": [

@@ -78,7 +78,7 @@ for (const plugin of plugins) {
     };
     pkg.openclaw.install = {
       ...pkg.openclaw.install,
-      minHostVersion: base,
+      minHostVersion: `>=${base}`,
     };
   }
   writeJson(pkgPath, pkg);
