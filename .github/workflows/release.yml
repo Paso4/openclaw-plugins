@@ -9,27 +9,19 @@ concurrency:
 
 permissions:
   contents: write
+  # Required to dispatch publish.yml (a Release published with GITHUB_TOKEN
+  # cannot trigger another workflow on its own).
+  actions: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Check release token
-        env:
-          RELEASE_PAT: ${{ secrets.RELEASE_PAT }}
-        run: |
-          if [ -z "$RELEASE_PAT" ]; then
-            echo "::error::RELEASE_PAT is not set. The release must push with a PAT so the published Release can trigger publish.yml."
-            exit 1
-          fi
-
       - uses: actions/checkout@v4
         with:
           ref: develop
           fetch-depth: 0
           fetch-tags: true
-          # A PAT (not GITHUB_TOKEN) so publishing the Release triggers publish.yml.
-          token: ${{ secrets.RELEASE_PAT }}
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -68,8 +60,13 @@ jobs:
 
       - name: Create GitHub Release
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "v${{ steps.version.outputs.version }}" \
             --title "v${{ steps.version.outputs.version }}" \
             --generate-notes
+
+      - name: Trigger publish workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run publish.yml --ref develop -f dry_run=false

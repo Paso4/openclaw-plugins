@@ -17,6 +17,7 @@
   "scripts": {
     "list:plugins": "bun scripts/list-plugins.mjs",
     "changed:plugins": "bun scripts/changed-plugins.mjs",
+    "affected:plugins": "bun scripts/affected-plugins.mjs",
     "sync:versions": "bun scripts/sync-versions.mjs",
     "verify:versions": "bun scripts/verify-versions.mjs",
     "resolve:version": "bun scripts/resolve-release-version.mjs",

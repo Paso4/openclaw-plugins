@@ -1,7 +1,10 @@
 name: Publish
 
 on:
-  # CD runs when a Release is published (created by release.yml).
+  # Dispatched by release.yml after it publishes the GitHub Release. A Release
+  # created with GITHUB_TOKEN cannot trigger this workflow via `release`, so
+  # release.yml calls it explicitly. `release: published` is kept for manually
+  # published Releases.
   release:
     types: [published]
   # Manual dry-run / targeted publish.
@@ -12,7 +15,7 @@ on:
         type: boolean
         default: true
       plugin:
-        description: 'Publish only this plugin (directory name); empty = all'
+        description: 'Override: publish only this plugin (directory name); empty = affected plugins'
         type: string
         default: ''
 
@@ -27,18 +30,29 @@ jobs:
       any: ${{ steps.list.outputs.any }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so the release commit's parent (the pending changesets)
+          # is available to resolve affected plugins.
+          fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Resolve plugin matrix
+      - name: Resolve affected plugin matrix
         id: list
         env:
           FILTER: ${{ inputs.plugin }}
         run: |
           set -euo pipefail
-          PLUGINS="$(bun scripts/list-plugins.mjs --matrix --filter "$FILTER")"
+          if [ -n "$FILTER" ]; then
+            # Explicit override: publish exactly the requested plugin.
+            PLUGINS="$(bun scripts/list-plugins.mjs --matrix --filter "$FILTER")"
+          else
+            # The release commit consumed the pending changesets; its parent
+            # still has them, which tells us which plugins the release affects.
+            PLUGINS="$(bun scripts/affected-plugins.mjs --base HEAD^)"
+          fi
           PLUGINS="${PLUGINS:-[]}"
           {
             echo "plugins<<PLUGINS_JSON"
