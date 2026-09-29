@@ -60,9 +60,12 @@ function redactHeadersForLog(
     if (
       lowerKey === 'authorization' ||
       lowerKey === 'cf-aig-authorization' ||
+      lowerKey.startsWith('cf-access-') ||
+      lowerKey === 'cf-access-token' ||
       lowerKey.includes('api-key') ||
       lowerKey.includes('token') ||
-      lowerKey.includes('secret')
+      lowerKey.includes('secret') ||
+      lowerKey.includes('client-id')
     ) {
       redacted[key] = '***';
     }
@@ -126,7 +129,7 @@ export default definePluginEntry({
 
           // Check profiles from both cloudflare-unified-billing and cloudflare-ai-gateway (aliased)
           const providerIdsToCheck = [PROVIDER_ID, ALIASED_PROVIDER];
-          log.info(
+          log.debug(
             `Looking for credentials in auth store for providers: ${providerIdsToCheck.join(' or ')}`,
           );
           for (const providerId of providerIdsToCheck) {
@@ -152,7 +155,7 @@ export default definePluginEntry({
           // Fallback: build provider from env vars alone. A custom domain uses
           // the gateway endpoint, so account/gateway IDs are optional there;
           // an Access-protected domain does not need an AI Gateway token.
-          log.info(
+          log.debug(
             `No credentials found in auth store for providers ${providerIdsToCheck.join(
               ' or ',
             )}. Falling back to env vars if available.`,
@@ -168,8 +171,8 @@ export default definePluginEntry({
               envAccess,
             });
             if (provider) {
-              log.info(
-                `Successfully built Cloudflare Unified Billing provider from env vars. accountId=${envAccountId ?? 'undefined'} gatewayId=${envGatewayId ?? 'undefined'} customDomain=${envCustomDomain ?? 'undefined'} tokenSource=${usingAccess ? 'access' : envApiToken ? API_TOKEN_ENV_VAR : envApiKey ? ENV_VAR : 'undefined'}`,
+              log.debug(
+                `Built Cloudflare Unified Billing provider from env vars (hasAccountId=${Boolean(envAccountId)} hasGatewayId=${Boolean(envGatewayId)} hasCustomDomain=${Boolean(envCustomDomain)} tokenSource=${usingAccess ? 'access' : envApiToken ? API_TOKEN_ENV_VAR : envApiKey ? ENV_VAR : 'undefined'})`,
               );
               // Cache headers for normalizeResolvedModel to use
               if (provider.headers) {
@@ -189,7 +192,7 @@ export default definePluginEntry({
       normalizeResolvedModel: (ctx) => {
         log.subsystem = 'cloudflare-unified-billing/normalize-resolved-model';
 
-        log.info(
+        log.debug(
           `normalizeResolvedModel hook called for modelId=${ctx.modelId} provider=${ctx.provider}`,
         );
 
@@ -239,8 +242,8 @@ export default definePluginEntry({
                       access: processEnvAccess,
                     }),
                   };
-                  log.info(
-                    `Resolved auth from profile for provider=${providerId}. accountId=${accountId} gatewayId=${gatewayId} customDomain=${customDomain ?? 'undefined'} tokenSource=${processEnvApiToken ? API_TOKEN_ENV_VAR : 'profile'}`,
+                  log.debug(
+                    `Resolved auth from profile for provider=${providerId} (hasAccountId=${Boolean(accountId)} hasGatewayId=${Boolean(gatewayId)} hasCustomDomain=${Boolean(customDomain)} tokenSource=${processEnvApiToken ? API_TOKEN_ENV_VAR : 'profile'})`,
                   );
                   foundAuth = true;
                   break;
@@ -251,19 +254,19 @@ export default definePluginEntry({
           }
 
           if (!foundAuth) {
-            log.warn(
+            log.debug(
               `No valid auth profiles found in agentDir for providers: ${providerIdsToCheck.join(' or ')}`,
             );
           }
         } else {
-          log.warn(`No agentDir available in normalizeResolvedModel context`);
+          log.debug(`No agentDir available in normalizeResolvedModel context`);
         }
 
         // If baseUrl not resolved from profiles, check if catalog set it in config
         const providerConfig = ctx.config?.models?.providers?.[ctx.provider];
         if (!model.baseUrl && providerConfig?.baseUrl) {
           model.baseUrl = providerConfig.baseUrl;
-          log.info(`Using baseUrl from provider config: ${providerConfig.baseUrl}`);
+          log.debug(`Using baseUrl from provider config`);
         }
 
         // Merge headers from config if present
@@ -272,7 +275,7 @@ export default definePluginEntry({
             ...model.headers,
             ...(providerConfig.headers as Record<string, string>),
           };
-          log.info(`Merged headers from provider config`);
+          log.debug(`Merged headers from provider config`);
         }
 
         // Fallback: if no auth yet, check cached headers from catalog provider
@@ -281,7 +284,7 @@ export default definePluginEntry({
             ...model.headers,
             ...cachedCfHeaders,
           };
-          log.info(`Merged cached headers from catalog provider`);
+          log.debug(`Merged cached headers from catalog provider`);
         }
 
         // Fallback: if still no baseUrl/auth, use env vars directly from process.env
@@ -295,8 +298,8 @@ export default definePluginEntry({
                 gatewayId: processEnvGatewayId,
                 customDomain: processEnvCustomDomain,
               });
-              log.info(
-                `Resolved baseUrl from process.env: accountId=${processEnvAccountId ?? 'undefined'} gatewayId=${processEnvGatewayId ?? 'undefined'} customDomain=${processEnvCustomDomain ?? 'undefined'}`,
+              log.debug(
+                `Resolved baseUrl from process.env (hasAccountId=${Boolean(processEnvAccountId)} hasGatewayId=${Boolean(processEnvGatewayId)} hasCustomDomain=${Boolean(processEnvCustomDomain)})`,
               );
             }
             if (!hasAuthHeaders(model.headers) && (processEnvToken || usingEnvAccess)) {
@@ -309,12 +312,12 @@ export default definePluginEntry({
                   access: processEnvAccess,
                 }),
               };
-              log.info(
+              log.debug(
                 `Resolved auth header from process.env (using ${usingEnvAccess ? 'cloudflare-access' : processEnvApiToken ? API_TOKEN_ENV_VAR : ENV_VAR})`,
               );
             }
           } else {
-            log.warn(
+            log.debug(
               `Missing process.env for fallback: ENV_VAR=${processEnvApiKey ? 'set' : 'missing'} API_TOKEN=${processEnvApiToken ? 'set' : 'missing'} ACCOUNT_ID=${processEnvAccountId ? 'set' : 'missing'} GATEWAY_ID=${processEnvGatewayId ? 'set' : 'missing'} CUSTOM_DOMAIN=${processEnvCustomDomain ? 'set' : 'missing'}`,
             );
           }
@@ -355,8 +358,8 @@ export default definePluginEntry({
           };
         }
 
-        log.info(
-          `normalizeResolvedModel result: modelId=${model.id} baseUrl=${model.baseUrl ?? 'undefined'} api: ${model.api ?? 'undefined'} headers=${JSON.stringify(redactHeadersForLog(model.headers as Record<string, string | null | undefined> | undefined))}`,
+        log.debug(
+          `normalizeResolvedModel result: modelId=${model.id} hasBaseUrl=${Boolean(model.baseUrl)} api=${model.api ?? 'undefined'} headers=${JSON.stringify(redactHeadersForLog(model.headers as Record<string, string | null | undefined> | undefined))}`,
         );
 
         return model;
@@ -368,7 +371,7 @@ export default definePluginEntry({
 
         const knownModel = ALL_MODELS.find((m) => m.id === modelId);
 
-        log.info(
+        log.debug(
           `Resolving modelId=${modelId} to Cloudflare Unified Billing model. Known model: ${!!knownModel}`,
         );
 

@@ -112,7 +112,8 @@ compatibility declaration move together.
 
 Multiple releases can ship against the same OpenClaw version by appending a
 build suffix (`2026.9.6-2`); `scripts/resolve-release-version.mjs` computes it
-from existing tags.
+from existing tags **and** the versions already published to ClawHub, so a
+manual publish can never be reused by a later release.
 
 ## CI/CD
 

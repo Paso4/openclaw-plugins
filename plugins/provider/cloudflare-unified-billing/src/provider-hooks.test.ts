@@ -55,7 +55,7 @@ describe('normalizeResolvedModel hook', () => {
   });
 
   it('logs warning when agentDir not available', () => {
-    expect(indexContent).toMatch(/log\.warn/);
+    expect(indexContent).toMatch(/log\.(warn|debug)/);
     expect(indexContent).toMatch(/No agentDir available/);
   });
 
@@ -64,7 +64,7 @@ describe('normalizeResolvedModel hook', () => {
   });
 
   it('logs normalization actions', () => {
-    expect(indexContent).toMatch(/log\.info/);
+    expect(indexContent).toMatch(/log\.(info|debug)/);
     expect(indexContent).toMatch(/normalizeResolvedModel/);
   });
 
@@ -109,7 +109,7 @@ describe('resolveDynamicModel hook', () => {
   });
 
   it('logs dynamic model resolution', () => {
-    expect(indexContent).toMatch(/log\.info/);
+    expect(indexContent).toMatch(/log\.(info|debug)/);
     expect(indexContent).toMatch(/resolveDynamicModel/);
   });
 });

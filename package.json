@@ -1,6 +1,6 @@
 {
   "name": "paso4-openclaw-plugins",
-  "version": "2026.9.6",
+  "version": "2026.9.6-2",
   "private": true,
   "description": "Paso4 public OpenClaw plugins — reusable provider, channel, tool, CLI-backend, and feature plugins published on ClawHub.",
   "keywords": [

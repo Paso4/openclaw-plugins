@@ -57,7 +57,7 @@ describe('wrapCloudflareUnifiedBillingStream logging', () => {
   });
 
   it('logs wrapping information', () => {
-    expect(wrappersContent).toMatch(/log\.info\(/);
+    expect(wrappersContent).toMatch(/log\.(info|debug)\(/);
     expect(wrappersContent).toMatch(/Wrapping streamFn/);
   });
 
@@ -75,7 +75,7 @@ describe('wrapCloudflareUnifiedBillingStream logging', () => {
   });
 
   it('logs info for request headers', () => {
-    expect(wrappersContent).toMatch(/log\.info\(/);
+    expect(wrappersContent).toMatch(/log\.(info|debug)\(/);
     expect(wrappersContent).toMatch(/CF Unified Billing request/);
   });
 });

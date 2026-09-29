@@ -1,6 +1,6 @@
 {
   "name": "@paso4/cloudflare-unified-billing",
-  "version": "2026.9.6",
+  "version": "2026.9.6-2",
   "description": "OpenClaw provider plugin for Cloudflare AI Gateway with full model catalog and unified billing support",
   "keywords": [
     "ai-gateway",

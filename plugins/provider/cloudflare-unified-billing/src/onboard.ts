@@ -42,8 +42,8 @@ function buildProvider(
 export function buildConfigPatch(
   params: UnifiedBillingProviderParams & { apiToken?: string },
 ): Partial<OpenClawConfig> {
-  log.info(
-    `Building config patch for Cloudflare Unified Billing with accountId=${params.accountId ?? 'undefined'}, gatewayId=${params.gatewayId ?? 'undefined'}, customDomain=${params.customDomain ?? 'undefined'}`,
+  log.debug(
+    `Building config patch for Cloudflare Unified Billing (hasAccountId=${Boolean(params.accountId)} hasGatewayId=${Boolean(params.gatewayId)} hasCustomDomain=${Boolean(params.customDomain)} hasApiToken=${Boolean(params.apiToken)} hasAccess=${Boolean(params.access && (params.access.token || (params.access.clientId && params.access.clientSecret)))})`,
   );
   return {
     models: {
@@ -69,8 +69,8 @@ export function applyConfig(
     alias: models[DEFAULT_MODEL_REF]?.alias ?? 'Cloudflare Unified Billing',
   };
 
-  log.info(
-    `Applying config patch for Cloudflare Unified Billing with params: ${JSON.stringify(params)}`,
+  log.debug(
+    `Applying config patch for Cloudflare Unified Billing (hasAccountId=${Boolean(params?.accountId)} hasGatewayId=${Boolean(params?.gatewayId)} hasCustomDomain=${Boolean(params?.customDomain)} hasApiToken=${Boolean(params?.apiToken)} hasAccess=${Boolean(params?.access && (params.access.token || (params.access.clientId && params.access.clientSecret)))})`,
   );
 
   const customDomain = normalizeCustomDomain(params?.customDomain);
@@ -89,7 +89,9 @@ export function applyConfig(
 
   const provider = buildProvider(params ?? {}, params?.apiToken);
 
-  log.info(`Resolved baseUrl for Cloudflare Unified Billing: ${provider.baseUrl}`);
+  log.debug(
+    `Resolved baseUrl for Cloudflare Unified Billing (hasBaseUrl=${Boolean(provider.baseUrl)})`,
+  );
 
   return {
     ...cfg,

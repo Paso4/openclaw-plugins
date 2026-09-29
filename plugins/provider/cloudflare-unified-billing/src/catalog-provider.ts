@@ -37,8 +37,8 @@ export function buildCatalogProvider(params: CatalogProviderParams): {
     credentialToken = normalizeOptionalString(params.credential.key);
     credentialAccountId = normalizeOptionalString(params.credential.metadata?.accountId);
     credentialGatewayId = normalizeOptionalString(params.credential.metadata?.gatewayId);
-    log.info(
-      `Using credential: accountId=${credentialAccountId ?? 'undefined'} gatewayId=${credentialGatewayId ?? 'undefined'}`,
+    log.debug(
+      `Using credential (hasAccountId=${Boolean(credentialAccountId)} hasGatewayId=${Boolean(credentialGatewayId)})`,
     );
   }
 
@@ -57,13 +57,13 @@ export function buildCatalogProvider(params: CatalogProviderParams): {
   // alone, so an AI Gateway token (and the account/gateway IDs it needs) is not
   // required on that path.
   if (!cfToken && !usingAccess) {
-    log.info('No REST API token found in credential or env vars');
+    log.debug('No REST API token found in credential or env vars');
     return null;
   }
 
   if (!customDomain && (!accountId || !gatewayId)) {
     log.error(
-      `Missing accountId or gatewayId. accountId: ${accountId ?? 'undefined'}, gatewayId: ${gatewayId ?? 'undefined'}`,
+      `Missing accountId or gatewayId (hasAccountId=${Boolean(accountId)} hasGatewayId=${Boolean(gatewayId)})`,
     );
     return null;
   }
@@ -74,8 +74,8 @@ export function buildCatalogProvider(params: CatalogProviderParams): {
     return null;
   }
 
-  log.info(
-    `Building catalog provider for Cloudflare Unified Billing with accountId=${accountId ?? 'undefined'}, gatewayId=${gatewayId ?? 'undefined'}, customDomain=${customDomain ?? 'undefined'}, access=${usingAccess}`,
+  log.debug(
+    `Building catalog provider for Cloudflare Unified Billing (hasAccountId=${Boolean(accountId)} hasGatewayId=${Boolean(gatewayId)} hasCustomDomain=${Boolean(customDomain)} access=${usingAccess})`,
   );
 
   const result = {
@@ -98,8 +98,8 @@ export function buildCatalogProvider(params: CatalogProviderParams): {
       : credentialToken
         ? 'auth-profile'
         : 'none';
-  log.info(
-    `Catalog provider built: accountId=${accountId ?? 'undefined'} gatewayId=${gatewayId ?? 'undefined'} customDomain=${customDomain ?? 'undefined'} tokenSource=${usingAccess ? 'access' : tokenSource} modelCount=${ALL_MODELS.length}`,
+  log.debug(
+    `Catalog provider built: tokenSource=${usingAccess ? 'access' : tokenSource} modelCount=${ALL_MODELS.length} hasCustomDomain=${Boolean(customDomain)}`,
   );
 
   return result;
