@@ -1,5 +1,14 @@
 # @paso4/cloudflare-unified-billing
 
+## 2026.9.8
+
+### Patch Changes
+
+- Migrate the plugin to OpenClaw 2026.9.8. Bumps the global version,
+  `minOpenclawVersion`, and the ClawHub `compat`/`build`/`install` metadata to
+  2026.9.8. The 2026.9.8 release requires no plugin-sdk, manifest, or runtime
+  changes for this plugin.
+
 ## 2026.9.6-2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@paso4/cloudflare-unified-billing",
-  "version": "2026.9.6-2",
+  "version": "2026.9.8",
   "description": "OpenClaw provider plugin for Cloudflare AI Gateway with full model catalog and unified billing support",
   "keywords": [
     "ai-gateway",
@@ -54,12 +54,12 @@
       "./dist/index.js"
     ],
     "compat": {
-      "pluginApi": ">=2026.9.6",
-      "minGatewayVersion": "2026.9.6"
+      "pluginApi": ">=2026.9.8",
+      "minGatewayVersion": "2026.9.8"
     },
     "build": {
-      "openclawVersion": "2026.9.6",
-      "pluginSdkVersion": "2026.9.6"
+      "openclawVersion": "2026.9.8",
+      "pluginSdkVersion": "2026.9.8"
     },
     "setup": {
       "providers": [
@@ -82,12 +82,12 @@
     "install": {
       "defaultChoice": "clawhub",
       "clawhubSpec": "@paso4/cloudflare-unified-billing",
-      "minHostVersion": ">=2026.9.6",
+      "minHostVersion": ">=2026.9.8",
       "allowInvalidConfigRecovery": "true"
     },
     "providers": [
       "cloudflare-unified-billing"
     ],
-    "minOpenclawVersion": "2026.9.6"
+    "minOpenclawVersion": "2026.9.8"
   }
 }
