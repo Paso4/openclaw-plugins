@@ -3,7 +3,9 @@
   "name": "Cloudflare Unified Billing (CF AI Gateway)",
   "version": "2026.9.8",
   "description": "Full model catalog for Cloudflare AI Gateway with unified billing support. Exposes 150+ models from Google Gemini, Anthropic Claude, OpenAI, xAI (Grok), DeepSeek, Alibaba Qwen, MiniMax, Moonshot Kimi, Workers AI frontier models, and more through a single gateway endpoint.",
-  "providers": ["cloudflare-unified-billing"],
+  "providers": [
+    "cloudflare-unified-billing"
+  ],
   "modelSupport": {
     "modelPrefixes": [
       "google/",
@@ -47,9 +49,15 @@
     "cloudflare-unified-billing": "cloudflare-ai-gateway"
   },
   "contracts": {
-    "webSearchProviders": ["cloudflare-ai-gateway-perplexity"],
-    "webFetchProviders": ["cloudflare-ai-gateway-google"],
-    "imageGenerationProviders": ["cloudflare-ai-gateway-google-images"]
+    "webSearchProviders": [
+      "cloudflare-ai-gateway-perplexity"
+    ],
+    "webFetchProviders": [
+      "cloudflare-ai-gateway-google"
+    ],
+    "imageGenerationProviders": [
+      "cloudflare-ai-gateway-google-images"
+    ]
   },
   "configSchema": {
     "type": "object",
