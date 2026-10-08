@@ -110,7 +110,7 @@ from repository secrets. PRs run the unit suite only.
   "capability": "model.run",
   "transport": "local",
   "provider": "cloudflare-unified-billing",
-  "model": "anthropic/claude-sonnet-4-5",
+  "model": "anthropic/claude-sonnet-4.5",
   "attempts": [],
   "outputs": [{ "text": "Hello!", "mediaUrl": null }]
 }

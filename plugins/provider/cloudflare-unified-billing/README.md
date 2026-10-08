@@ -82,7 +82,7 @@ Models are referenced with the `cloudflare-unified-billing/` prefix:
   "agents": {
     "defaults": {
       "model": {
-        "primary": "cloudflare-unified-billing/anthropic/claude-sonnet-4-6",
+        "primary": "cloudflare-unified-billing/anthropic/claude-sonnet-4.6",
         "fallbacks": ["cloudflare-unified-billing/openai/gpt-4o"]
       }
     }
@@ -166,18 +166,19 @@ See [Google's thought_signature documentation](https://ai.google.dev/gemini-api/
 
 | Model               | Context | Max Output |
 | ------------------- | ------- | ---------- |
-| `claude-opus-5-5`   | 1M      | 128K       |
+| `claude-opus-5.5`   | 1M      | 128K       |
 | `claude-opus-5`     | 1M      | 128K       |
+| `claude-sonnet-5.5` | 1M      | 128K       |
 | `claude-sonnet-5`   | 1M      | 128K       |
 | `claude-fable-5`    | 1M      | 128K       |
 | `claude-fable-5.1`  | 1M      | 128K       |
-| `claude-opus-4-8`   | 1M      | 32K        |
-| `claude-opus-4-7`   | 1M      | 32K        |
-| `claude-opus-4-6`   | 1M      | 32K        |
-| `claude-opus-4-5`   | 200K    | 32K        |
-| `claude-sonnet-4-6` | 200K    | 64K        |
-| `claude-sonnet-4-5` | 200K    | 64K        |
-| `claude-haiku-4-5`  | 200K    | 16K        |
+| `claude-opus-4.8`   | 1M      | 32K        |
+| `claude-opus-4.7`   | 1M      | 32K        |
+| `claude-opus-4.6`   | 1M      | 32K        |
+| `claude-opus-4.5`   | 200K    | 32K        |
+| `claude-sonnet-4.6` | 200K    | 64K        |
+| `claude-sonnet-4.5` | 200K    | 64K        |
+| `claude-haiku-4.5`  | 200K    | 16K        |
 
 ### OpenAI
 
@@ -185,6 +186,7 @@ See [Google's thought_signature documentation](https://ai.google.dev/gemini-api/
 | --------------- | ------- | ---------- |
 | `gpt-6-astra`   | 1.1M    | 128K       |
 | `gpt-6-sol`     | 1.1M    | 128K       |
+| `gpt-6.1-sol`   | 1.1M    | 128K       |
 | `gpt-6-luna`    | 1.1M    | 128K       |
 | `gpt-5.6-sol`   | 1.1M    | 128K       |
 | `gpt-5.6-terra` | 1.1M    | 128K       |
@@ -222,12 +224,34 @@ The catalog also includes DeepSeek (`deepseek/deepseek-v4-pro`), Alibaba Qwen
 (`alibaba/qwen3.8-max`, `qwen3.7-max`, `qwen3.7-plus`, `qwen3.5-397b-a17b`,
 `qwen3-max`), Moonshot (`moonshotai/kimi-k3`, `moonshotai/kimi-k2.6`,
 `moonshotai/kimi-k2.7-code`), MiniMax (`minimax/m3`, `minimax/m2.7`), Google
-Gemma 4 (`google/gemma-4-26b-a4b-it`), Worker AI frontier models
-(`workers-ai/@cf/zai-org/glm-5.2`, `workers-ai/@cf/moonshotai/kimi-k2.6`,
-`workers-ai/@cf/moonshotai/kimi-k2.7-code`,
-`workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813`), plus the Groq, Mistral,
-Cohere, Perplexity, Cerebras, Baseten, and Parallel families. See
-`src/models.ts` for the full list and pricing.
+Gemma 4 (`google/gemma-4-26b-a4b-it`), plus the Groq, Mistral, Cohere,
+Perplexity, Cerebras, Baseten, and Parallel families. See `src/models.ts` for
+the full list and pricing.
+
+### New authors
+
+| Model             | Context | Max Output | Reasoning | Vision |
+| ----------------- | ------- | ---------- | --------- | ------ |
+| `unbiased/pareto` | 128K\*  | default    | No        | Yes    |
+
+\* The Cloudflare model page does not publish a context window for Pareto, so
+the plugin default (128K) is used. Max output is not published for any of these
+models, so the plugin default is used.
+
+### Workers AI additions
+
+The catalog tracks the Cloudflare Workers AI text-generation models under the
+`workers-ai/@cf/` prefix, including `@cf/zai-org/glm-5.3`,
+`@cf/zai-org/glm-5.3-flash`, `@cf/zai-org/glm-4.7-flash`,
+`@cf/swiss-ai/apertus-v1.5-8b`,
+`@cf/utter-project/eurollm-9b-it`, `@cf/ibm-granite/granite-4.0-h-micro`,
+`@cf/aisingapore/gemma-sea-lion-v4-27b-it`,
+`@cf/deepseek-ai/deepseek-r1-distill-qwen-32b`, `@cf/meta/llama-3.1-8b-instruct-fp8`,
+`@cf/meta/llama-3.2-11b-vision-instruct`, `@cf/google/gemma-2b-it-lora`,
+`@cf/google/gemma-7b-it-lora`, `@cf/meta-llama/llama-2-7b-chat-hf-lora`,
+`@cf/zai-org/glm-5.2`, `@cf/moonshotai/kimi-k2.6`,
+`@cf/moonshotai/kimi-k2.7-code`, and `@cf/deepseek-ai/deepseek-v4-pro-0813`.
+Workers AI is billed per neuron, so these entries carry a zero cost block.
 
 ## Cloudflare API Token Permissions
 
