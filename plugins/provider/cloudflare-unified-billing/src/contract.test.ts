@@ -148,9 +148,9 @@ describe('cloudflare-unified-billing provider contract', () => {
     it('has Claude models from anthropic', async () => {
       const { ALL_MODELS } = await import('./models.js');
       const claudeIds = [
-        'anthropic/claude-sonnet-4-6',
-        'anthropic/claude-opus-4-6',
-        'anthropic/claude-haiku-4-5',
+        'anthropic/claude-sonnet-4.6',
+        'anthropic/claude-opus-4.6',
+        'anthropic/claude-haiku-4.5',
       ];
       for (const id of claudeIds) {
         const model = ALL_MODELS.find((m) => m.id === id);
@@ -172,8 +172,8 @@ describe('cloudflare-unified-billing provider contract', () => {
       const reasoningIds = [
         'google/gemini-2.5-pro',
         'google/gemini-2.5-flash',
-        'anthropic/claude-opus-4-6',
-        'anthropic/claude-sonnet-4-6',
+        'anthropic/claude-opus-4.6',
+        'anthropic/claude-sonnet-4.6',
         'openai/o3',
         'openai/o4-mini',
       ];

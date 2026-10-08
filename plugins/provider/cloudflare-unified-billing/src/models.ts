@@ -52,23 +52,28 @@ export enum CloudflareUnifiedBillingModel {
   VertexGemini15Pro = 'google-vertex-ai/google/gemini-1.5-pro',
   VertexGemini15Flash = 'google-vertex-ai/google/gemini-1.5-flash',
   VertexGemini15Flash8b = 'google-vertex-ai/google/gemini-1.5-flash-8b',
-  // Anthropic
-  ClaudeOpus48 = 'anthropic/claude-opus-4-8',
-  ClaudeOpus47 = 'anthropic/claude-opus-4-7',
-  ClaudeOpus46 = 'anthropic/claude-opus-4-6',
-  ClaudeOpus45 = 'anthropic/claude-opus-4-5',
-  ClaudeSonnet46 = 'anthropic/claude-sonnet-4-6',
-  ClaudeSonnet45 = 'anthropic/claude-sonnet-4-5',
-  ClaudeHaiku45 = 'anthropic/claude-haiku-4-5',
+  // Anthropic — Cloudflare AI Gateway's REST catalog uses the dot form for
+  // minor versions (e.g. `claude-sonnet-4.6`); the dashed form only applies to
+  // the native `gateway.ai.cloudflare.com/<provider>` endpoint, which this
+  // plugin does not use.
+  ClaudeOpus48 = 'anthropic/claude-opus-4.8',
+  ClaudeOpus47 = 'anthropic/claude-opus-4.7',
+  ClaudeOpus46 = 'anthropic/claude-opus-4.6',
+  ClaudeOpus45 = 'anthropic/claude-opus-4.5',
+  ClaudeSonnet46 = 'anthropic/claude-sonnet-4.6',
+  ClaudeSonnet45 = 'anthropic/claude-sonnet-4.5',
+  ClaudeHaiku45 = 'anthropic/claude-haiku-4.5',
   ClaudeOpus5 = 'anthropic/claude-opus-5',
-  ClaudeOpus55 = 'anthropic/claude-opus-5-5',
+  ClaudeOpus55 = 'anthropic/claude-opus-5.5',
   ClaudeSonnet5 = 'anthropic/claude-sonnet-5',
+  ClaudeSonnet55 = 'anthropic/claude-sonnet-5.5',
   ClaudeFable5 = 'anthropic/claude-fable-5',
   ClaudeFable51 = 'anthropic/claude-fable-5.1',
   // OpenAI
   Gpt6Astra = 'openai/gpt-6-astra',
   Gpt6Sol = 'openai/gpt-6-sol',
   Gpt6Luna = 'openai/gpt-6-luna',
+  Gpt61Sol = 'openai/gpt-6.1-sol',
   Gpt56Sol = 'openai/gpt-5.6-sol',
   Gpt56Terra = 'openai/gpt-5.6-terra',
   Gpt56Luna = 'openai/gpt-5.6-luna',
@@ -469,6 +474,16 @@ const anthropicModels: ModelDefinitionConfig[] = [
     cost: { input: 2.0, output: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
   },
   {
+    id: CloudflareUnifiedBillingModel.ClaudeSonnet55,
+    name: 'Claude Sonnet 5.5',
+
+    reasoning: true,
+    input: ['text', 'image'],
+    contextWindow: 1000000,
+    maxTokens: 128000,
+    cost: { input: 2.0, output: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
+  },
+  {
     id: CloudflareUnifiedBillingModel.ClaudeFable5,
     name: 'Claude Fable 5',
 
@@ -578,6 +593,16 @@ const openaiModels: ModelDefinitionConfig[] = [
     contextWindow: 1050000,
     maxTokens: 128000,
     cost: { input: 2.0, output: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Gpt61Sol,
+    name: 'GPT-6.1 Sol',
+
+    reasoning: true,
+    input: ['text', 'image'],
+    contextWindow: 1050000,
+    maxTokens: 128000,
+    cost: { input: 2.0, output: 10.0, cacheRead: 0.1, cacheWrite: 2.5 },
   },
   {
     id: CloudflareUnifiedBillingModel.Gpt6Luna,

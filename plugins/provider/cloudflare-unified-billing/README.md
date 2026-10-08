@@ -82,7 +82,7 @@ Models are referenced with the `cloudflare-unified-billing/` prefix:
   "agents": {
     "defaults": {
       "model": {
-        "primary": "cloudflare-unified-billing/anthropic/claude-sonnet-4-6",
+        "primary": "cloudflare-unified-billing/anthropic/claude-sonnet-4.6",
         "fallbacks": ["cloudflare-unified-billing/openai/gpt-4o"]
       }
     }
@@ -166,18 +166,19 @@ See [Google's thought_signature documentation](https://ai.google.dev/gemini-api/
 
 | Model               | Context | Max Output |
 | ------------------- | ------- | ---------- |
-| `claude-opus-5-5`   | 1M      | 128K       |
+| `claude-opus-5.5`   | 1M      | 128K       |
 | `claude-opus-5`     | 1M      | 128K       |
+| `claude-sonnet-5.5` | 1M      | 128K       |
 | `claude-sonnet-5`   | 1M      | 128K       |
 | `claude-fable-5`    | 1M      | 128K       |
 | `claude-fable-5.1`  | 1M      | 128K       |
-| `claude-opus-4-8`   | 1M      | 32K        |
-| `claude-opus-4-7`   | 1M      | 32K        |
-| `claude-opus-4-6`   | 1M      | 32K        |
-| `claude-opus-4-5`   | 200K    | 32K        |
-| `claude-sonnet-4-6` | 200K    | 64K        |
-| `claude-sonnet-4-5` | 200K    | 64K        |
-| `claude-haiku-4-5`  | 200K    | 16K        |
+| `claude-opus-4.8`   | 1M      | 32K        |
+| `claude-opus-4.7`   | 1M      | 32K        |
+| `claude-opus-4.6`   | 1M      | 32K        |
+| `claude-opus-4.5`   | 200K    | 32K        |
+| `claude-sonnet-4.6` | 200K    | 64K        |
+| `claude-sonnet-4.5` | 200K    | 64K        |
+| `claude-haiku-4.5`  | 200K    | 16K        |
 
 ### OpenAI
 
@@ -185,6 +186,7 @@ See [Google's thought_signature documentation](https://ai.google.dev/gemini-api/
 | --------------- | ------- | ---------- |
 | `gpt-6-astra`   | 1.1M    | 128K       |
 | `gpt-6-sol`     | 1.1M    | 128K       |
+| `gpt-6.1-sol`   | 1.1M    | 128K       |
 | `gpt-6-luna`    | 1.1M    | 128K       |
 | `gpt-5.6-sol`   | 1.1M    | 128K       |
 | `gpt-5.6-terra` | 1.1M    | 128K       |

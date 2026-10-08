@@ -58,8 +58,8 @@ describe('cloudflare-unified-billing model definitions', () => {
     const expectedReasoningIds = [
       'google/gemini-2.5-pro',
       'google/gemini-2.5-flash',
-      'anthropic/claude-opus-4-6',
-      'anthropic/claude-sonnet-4-6',
+      'anthropic/claude-opus-4.6',
+      'anthropic/claude-sonnet-4.6',
       'openai/o3',
       'openai/o4-mini',
       'openai/o3-mini',
@@ -78,7 +78,7 @@ describe('cloudflare-unified-billing model definitions', () => {
 
     const expectedVisionIds = [
       'google/gemini-2.5-pro',
-      'anthropic/claude-sonnet-4-6',
+      'anthropic/claude-sonnet-4.6',
       'openai/gpt-4o',
     ];
 
@@ -102,7 +102,7 @@ describe('cloudflare-unified-billing 2026.9.6 model additions', () => {
     cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
   }> = [
     {
-      id: 'anthropic/claude-opus-5-5',
+      id: 'anthropic/claude-opus-5.5',
       name: 'Claude Opus 5.5',
       contextWindow: 1000000,
       maxTokens: 128000,
@@ -140,5 +140,53 @@ describe('cloudflare-unified-billing 2026.9.6 model additions', () => {
     expect(model?.cost).toEqual(entry.cost);
     expect(model?.reasoning).toBe(true);
     expect(model?.input).toEqual(['text', 'image']);
+  });
+});
+
+// ── OpenClaw 2026.9.9 model additions ────────────────────────────────────────
+// 2026.9.9 enables GPT-6.1 Sol, and the Cloudflare REST catalog also ships
+// Claude Sonnet 5.5. Metadata mirrors the Cloudflare model pages.
+describe('cloudflare-unified-billing 2026.9.9 catalog additions', () => {
+  const expected: Array<{
+    id: string;
+    name: string;
+    contextWindow: number;
+    maxTokens: number;
+    cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
+  }> = [
+    {
+      id: 'openai/gpt-6.1-sol',
+      name: 'GPT-6.1 Sol',
+      contextWindow: 1050000,
+      maxTokens: 128000,
+      cost: { input: 2.0, output: 10.0, cacheRead: 0.1, cacheWrite: 2.5 },
+    },
+    {
+      id: 'anthropic/claude-sonnet-5.5',
+      name: 'Claude Sonnet 5.5',
+      contextWindow: 1000000,
+      maxTokens: 128000,
+      cost: { input: 2.0, output: 10.0, cacheRead: 0.2, cacheWrite: 2.5 },
+    },
+  ];
+
+  it.each(expected)('includes $id with the shipped metadata', (entry) => {
+    const model = ALL_MODELS.find((m: any) => m.id === entry.id);
+    expect(model, `missing model ${entry.id}`).toBeDefined();
+    expect(model?.name).toBe(entry.name);
+    expect(model?.contextWindow).toBe(entry.contextWindow);
+    expect(model?.maxTokens).toBe(entry.maxTokens);
+    expect(model?.cost).toEqual(entry.cost);
+  });
+});
+
+describe('cloudflare-unified-billing Anthropic model ids', () => {
+  it('uses the Cloudflare REST catalog dot form for minor versions', () => {
+    const ids = ALL_MODELS.filter((m: any) => m.id.startsWith('anthropic/')).map((m: any) => m.id);
+    expect(ids).toContain('anthropic/claude-sonnet-4.6');
+    expect(ids).toContain('anthropic/claude-opus-5.5');
+    for (const id of ids) {
+      expect(id).not.toMatch(/^anthropic\/claude-(opus|sonnet|haiku)-\d+-\d+$/);
+    }
   });
 });
