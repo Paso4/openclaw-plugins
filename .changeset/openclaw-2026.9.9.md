@@ -13,3 +13,13 @@ catalog: adds `openai/gpt-6.1-sol` (enabled by 2026.9.9) and
 `anthropic/claude-sonnet-5.5`, and aligns the Anthropic REST model ids with the
 Cloudflare catalog's dot form (for example `anthropic/claude-sonnet-4.6`
 instead of `anthropic/claude-sonnet-4-6`).
+
+Expands the catalog further with the Cloudflare catalog's new text-generation
+authors — Thinking Machines (`thinkingmachines/inkling`,
+`thinkingmachines/inkling-256k`), TypeSafe (`typesafe/jev`), and Unbiased
+(`unbiased/pareto`) — plus 15 additional Workers AI `@cf/*` text-generation
+models (Clef, GLM 5.3 / 4.7 Flash, Apertus, EuroLLM, Gemma LoRA / SEA-LION,
+Granite, DeepSeek R1 Distill Qwen, and Llama 2 / 3.1 / 3.2 variants). The
+`thinkingmachines/`, `typesafe/`, and `unbiased/` prefixes are added to
+`modelSupport.modelPrefixes`; the Workers AI entries keep the zero cost block
+used by the existing `workers-ai` models.

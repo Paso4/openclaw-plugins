@@ -190,3 +190,175 @@ describe('cloudflare-unified-billing Anthropic model ids', () => {
     }
   });
 });
+
+// ── Cloudflare catalog expansion: new authors ────────────────────────────────
+// Metadata sourced from the Cloudflare model catalog pages. Max output is not
+// published there, so the plugin default (4096) is used.
+describe('cloudflare-unified-billing catalog expansion (new authors)', () => {
+  const expected: Array<{
+    id: string;
+    name: string;
+    reasoning: boolean;
+    input: string[];
+    contextWindow: number;
+    cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
+  }> = [
+    {
+      id: 'thinkingmachines/inkling',
+      name: 'Inkling',
+      reasoning: true,
+      input: ['text'],
+      contextWindow: 64000,
+      cost: { input: 1.87, output: 4.68, cacheRead: 0.374, cacheWrite: 1.87 },
+    },
+    {
+      id: 'thinkingmachines/inkling-256k',
+      name: 'Inkling 256K',
+      reasoning: true,
+      input: ['text'],
+      contextWindow: 262144,
+      cost: { input: 3.74, output: 9.36, cacheRead: 0.748, cacheWrite: 3.74 },
+    },
+    {
+      id: 'typesafe/jev',
+      name: 'Jev',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 32000,
+      cost: { input: 0.042, output: 0, cacheRead: 0, cacheWrite: 0 },
+    },
+    {
+      id: 'unbiased/pareto',
+      name: 'Pareto',
+      reasoning: false,
+      input: ['text', 'image'],
+      // Context window is not published on the Cloudflare model page.
+      contextWindow: 128000,
+      cost: { input: 2.5, output: 7.5, cacheRead: 0.25, cacheWrite: 0 },
+    },
+  ];
+
+  it.each(expected)('includes $id with the sourced metadata', (entry) => {
+    const model = ALL_MODELS.find((m: any) => m.id === entry.id);
+    expect(model, `missing model ${entry.id}`).toBeDefined();
+    expect(model?.name).toBe(entry.name);
+    expect(model?.contextWindow).toBe(entry.contextWindow);
+    expect(model?.maxTokens).toBe(4096);
+    expect(model?.reasoning).toBe(entry.reasoning);
+    expect(model?.input).toEqual(entry.input);
+    expect(model?.cost).toEqual(entry.cost);
+  });
+});
+
+// ── Cloudflare catalog expansion: Workers AI text-generation models ──────────
+// Workers AI is billed per neuron, so these keep the zero cost block from the
+// other `workers-ai` entries. Max output is not published.
+describe('cloudflare-unified-billing catalog expansion (Workers AI)', () => {
+  const expected: Array<{
+    id: string;
+    reasoning: boolean;
+    input: string[];
+    contextWindow: number;
+  }> = [
+    {
+      id: 'workers-ai/@cf/cloudflare/clef',
+      reasoning: false,
+      input: ['text', 'image'],
+      contextWindow: 65536,
+    },
+    {
+      id: 'workers-ai/@cf/cloudflare/clef-flash',
+      reasoning: false,
+      input: ['text', 'image'],
+      contextWindow: 65536,
+    },
+    {
+      id: 'workers-ai/@cf/zai-org/glm-4.7-flash',
+      reasoning: true,
+      input: ['text'],
+      contextWindow: 131072,
+    },
+    {
+      id: 'workers-ai/@cf/zai-org/glm-5.3',
+      reasoning: true,
+      input: ['text'],
+      contextWindow: 1048576,
+    },
+    {
+      id: 'workers-ai/@cf/zai-org/glm-5.3-flash',
+      reasoning: true,
+      input: ['text', 'image'],
+      contextWindow: 1048576,
+    },
+    {
+      id: 'workers-ai/@cf/swiss-ai/apertus-v1.5-8b',
+      reasoning: false,
+      input: ['text', 'image'],
+      contextWindow: 262144,
+    },
+    {
+      id: 'workers-ai/@cf/utter-project/eurollm-9b-it',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 32000,
+    },
+    {
+      id: 'workers-ai/@cf/google/gemma-2b-it-lora',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 8192,
+    },
+    {
+      id: 'workers-ai/@cf/google/gemma-7b-it-lora',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 3500,
+    },
+    {
+      id: 'workers-ai/@cf/aisingapore/gemma-sea-lion-v4-27b-it',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 128000,
+    },
+    {
+      id: 'workers-ai/@cf/ibm-granite/granite-4.0-h-micro',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 131000,
+    },
+    {
+      id: 'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
+      reasoning: true,
+      input: ['text'],
+      contextWindow: 80000,
+    },
+    {
+      id: 'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 8192,
+    },
+    {
+      id: 'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
+      reasoning: false,
+      input: ['text'],
+      contextWindow: 32000,
+    },
+    {
+      id: 'workers-ai/@cf/meta/llama-3.2-11b-vision-instruct',
+      reasoning: false,
+      input: ['text', 'image'],
+      contextWindow: 128000,
+    },
+  ];
+
+  it.each(expected)('includes $id with a zero cost block', (entry) => {
+    const model = ALL_MODELS.find((m: any) => m.id === entry.id);
+    expect(model, `missing model ${entry.id}`).toBeDefined();
+    expect(model?.contextWindow).toBe(entry.contextWindow);
+    expect(model?.maxTokens).toBe(4096);
+    expect(model?.reasoning).toBe(entry.reasoning);
+    expect(model?.input).toEqual(entry.input);
+    expect(model?.cost).toEqual({ input: 0, output: 0, cacheRead: 0, cacheWrite: 0 });
+  });
+});

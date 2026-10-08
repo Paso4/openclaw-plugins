@@ -170,6 +170,21 @@ export enum CloudflareUnifiedBillingModel {
   Glm52 = 'workers-ai/@cf/zai-org/glm-5.2',
   DeepseekV4ProWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813',
   DeepseekV4FlashWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731',
+  ClefWorkersAi = 'workers-ai/@cf/cloudflare/clef',
+  ClefFlashWorkersAi = 'workers-ai/@cf/cloudflare/clef-flash',
+  Glm47FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-4.7-flash',
+  Glm53WorkersAi = 'workers-ai/@cf/zai-org/glm-5.3',
+  Glm53FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-5.3-flash',
+  Apertus15_8bWorkersAi = 'workers-ai/@cf/swiss-ai/apertus-v1.5-8b',
+  Eurollm9bItWorkersAi = 'workers-ai/@cf/utter-project/eurollm-9b-it',
+  Gemma2bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-2b-it-lora',
+  Gemma7bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-7b-it-lora',
+  GemmaSeaLionV4_27bItWorkersAi = 'workers-ai/@cf/aisingapore/gemma-sea-lion-v4-27b-it',
+  Granite40HMicroWorkersAi = 'workers-ai/@cf/ibm-granite/granite-4.0-h-micro',
+  DeepseekR1DistillQwen32bWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
+  Llama27bChatHfLoraWorkersAi = 'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
+  Llama318bInstructFp8WorkersAi = 'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
+  Llama3211bVisionInstructWorkersAi = 'workers-ai/@cf/meta/llama-3.2-11b-vision-instruct',
   // DeepSeek
   DeepseekChat = 'deepseek/deepseek-chat',
   DeepseekCoder = 'deepseek/deepseek-coder',
@@ -205,6 +220,13 @@ export enum CloudflareUnifiedBillingModel {
   // MiniMax
   MiniMaxM3 = 'minimax/m3',
   MiniMaxM27 = 'minimax/m2.7',
+  // Thinking Machines
+  Inkling = 'thinkingmachines/inkling',
+  Inkling256k = 'thinkingmachines/inkling-256k',
+  // TypeSafe
+  Jev = 'typesafe/jev',
+  // Unbiased
+  Pareto = 'unbiased/pareto',
 }
 
 export const DEFAULT_MODEL_REF = `${PROVIDER_ID}/${CloudflareUnifiedBillingModel.ClaudeSonnet46}`;
@@ -1479,6 +1501,145 @@ const workersAiModels: ModelDefinitionConfig[] = [
     maxTokens: 128,
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
+  // Workers AI text-generation models added from the Cloudflare Workers AI
+  // catalog. Workers AI is billed per neuron, so these keep the zero cost block
+  // used by the other `workers-ai` entries. The catalog does not publish a max
+  // output for them, so the plugin default is used.
+  {
+    id: CloudflareUnifiedBillingModel.ClefWorkersAi,
+    name: 'Clef',
+    reasoning: false,
+    input: ['text', 'image'],
+    contextWindow: 65536,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.ClefFlashWorkersAi,
+    name: 'Clef Flash',
+    reasoning: false,
+    input: ['text', 'image'],
+    contextWindow: 65536,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Glm47FlashWorkersAi,
+    name: 'GLM 4.7 Flash',
+    reasoning: true,
+    input: ['text'],
+    contextWindow: 131072,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Glm53WorkersAi,
+    name: 'GLM 5.3',
+    reasoning: true,
+    input: ['text'],
+    contextWindow: 1048576,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Glm53FlashWorkersAi,
+    name: 'GLM 5.3 Flash',
+    reasoning: true,
+    input: ['text', 'image'],
+    contextWindow: 1048576,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Apertus15_8bWorkersAi,
+    name: 'Apertus 1.5 8B',
+    reasoning: false,
+    input: ['text', 'image'],
+    contextWindow: 262144,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Eurollm9bItWorkersAi,
+    name: 'EuroLLM 9B IT',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 32000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Gemma2bItLoraWorkersAi,
+    name: 'Gemma 2B IT LoRA',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 8192,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Gemma7bItLoraWorkersAi,
+    name: 'Gemma 7B IT LoRA',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 3500,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.GemmaSeaLionV4_27bItWorkersAi,
+    name: 'Gemma Sea Lion V4 27B IT',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 128000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Granite40HMicroWorkersAi,
+    name: 'Granite 4.0 H Micro',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 131000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.DeepseekR1DistillQwen32bWorkersAi,
+    name: 'DeepSeek R1 Distill Qwen 32B',
+    reasoning: true,
+    input: ['text'],
+    contextWindow: 80000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Llama27bChatHfLoraWorkersAi,
+    name: 'Llama 2 7B Chat HF LoRA',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 8192,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Llama318bInstructFp8WorkersAi,
+    name: 'Llama 3.1 8B Instruct FP8',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 32000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Llama3211bVisionInstructWorkersAi,
+    name: 'Llama 3.2 11B Vision Instruct',
+    reasoning: false,
+    input: ['text', 'image'],
+    contextWindow: 128000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
 ];
 
 const deepseekModels: ModelDefinitionConfig[] = [
@@ -1765,6 +1926,55 @@ const minimaxModels: ModelDefinitionConfig[] = [
   },
 ];
 
+const thinkingMachinesModels: ModelDefinitionConfig[] = [
+  {
+    id: CloudflareUnifiedBillingModel.Inkling,
+    name: 'Inkling',
+
+    reasoning: true,
+    input: ['text'],
+    contextWindow: 64000,
+    maxTokens: 4096,
+    cost: { input: 1.87, output: 4.68, cacheRead: 0.374, cacheWrite: 1.87 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Inkling256k,
+    name: 'Inkling 256K',
+
+    reasoning: true,
+    input: ['text'],
+    contextWindow: 262144,
+    maxTokens: 4096,
+    cost: { input: 3.74, output: 9.36, cacheRead: 0.748, cacheWrite: 3.74 },
+  },
+];
+
+const typesafeModels: ModelDefinitionConfig[] = [
+  {
+    id: CloudflareUnifiedBillingModel.Jev,
+    name: 'Jev',
+    reasoning: false,
+    input: ['text'],
+    contextWindow: 32000,
+    maxTokens: 4096,
+    cost: { input: 0.042, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+];
+
+const unbiasedModels: ModelDefinitionConfig[] = [
+  {
+    id: CloudflareUnifiedBillingModel.Pareto,
+    name: 'Pareto',
+    reasoning: false,
+    input: ['text', 'image'],
+    // Context window is not published on the Cloudflare model page; the plugin
+    // default is used.
+    contextWindow: 128000,
+    maxTokens: 4096,
+    cost: { input: 2.5, output: 7.5, cacheRead: 0.25, cacheWrite: 0 },
+  },
+];
+
 export const ALL_MODELS: ModelDefinitionConfig[] = [
   ...googleModels,
   ...anthropicModels,
@@ -1784,6 +1994,9 @@ export const ALL_MODELS: ModelDefinitionConfig[] = [
   ...alibabaModels,
   ...moonshotModels,
   ...minimaxModels,
+  ...thinkingMachinesModels,
+  ...typesafeModels,
+  ...unbiasedModels,
 ];
 
 /**

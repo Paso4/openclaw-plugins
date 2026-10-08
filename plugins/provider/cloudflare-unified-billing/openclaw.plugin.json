@@ -22,7 +22,10 @@
       "parallel/",
       "alibaba/",
       "moonshotai/",
-      "minimax/"
+      "minimax/",
+      "thinkingmachines/",
+      "typesafe/",
+      "unbiased/"
     ]
   },
   "setup": {

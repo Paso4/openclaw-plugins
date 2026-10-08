@@ -139,7 +139,10 @@ describe('cloudflare-unified-billing model ID namespace safety', () => {
           model.id.startsWith('parallel/') ||
           model.id.startsWith('alibaba/') ||
           model.id.startsWith('moonshotai/') ||
-          model.id.startsWith('minimax/');
+          model.id.startsWith('minimax/') ||
+          model.id.startsWith('thinkingmachines/') ||
+          model.id.startsWith('typesafe/') ||
+          model.id.startsWith('unbiased/');
         expect(hasPrefix).toBe(true);
       }
     });
