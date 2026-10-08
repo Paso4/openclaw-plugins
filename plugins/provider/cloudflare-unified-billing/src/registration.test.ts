@@ -204,30 +204,6 @@ describe('cloudflare-unified-billing catalog expansion (new authors)', () => {
     cost: { input: number; output: number; cacheRead: number; cacheWrite: number };
   }> = [
     {
-      id: 'thinkingmachines/inkling',
-      name: 'Inkling',
-      reasoning: true,
-      input: ['text'],
-      contextWindow: 64000,
-      cost: { input: 1.87, output: 4.68, cacheRead: 0.374, cacheWrite: 1.87 },
-    },
-    {
-      id: 'thinkingmachines/inkling-256k',
-      name: 'Inkling 256K',
-      reasoning: true,
-      input: ['text'],
-      contextWindow: 262144,
-      cost: { input: 3.74, output: 9.36, cacheRead: 0.748, cacheWrite: 3.74 },
-    },
-    {
-      id: 'typesafe/jev',
-      name: 'Jev',
-      reasoning: false,
-      input: ['text'],
-      contextWindow: 32000,
-      cost: { input: 0.042, output: 0, cacheRead: 0, cacheWrite: 0 },
-    },
-    {
       id: 'unbiased/pareto',
       name: 'Pareto',
       reasoning: false,
@@ -260,18 +236,6 @@ describe('cloudflare-unified-billing catalog expansion (Workers AI)', () => {
     input: string[];
     contextWindow: number;
   }> = [
-    {
-      id: 'workers-ai/@cf/cloudflare/clef',
-      reasoning: false,
-      input: ['text', 'image'],
-      contextWindow: 65536,
-    },
-    {
-      id: 'workers-ai/@cf/cloudflare/clef-flash',
-      reasoning: false,
-      input: ['text', 'image'],
-      contextWindow: 65536,
-    },
     {
       id: 'workers-ai/@cf/zai-org/glm-4.7-flash',
       reasoning: true,

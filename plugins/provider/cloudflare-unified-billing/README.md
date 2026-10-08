@@ -230,12 +230,9 @@ the full list and pricing.
 
 ### New authors
 
-| Model                           | Context | Max Output | Reasoning | Vision |
-| ------------------------------- | ------- | ---------- | --------- | ------ |
-| `thinkingmachines/inkling`      | 64K     | default    | Yes       | No     |
-| `thinkingmachines/inkling-256k` | 256K    | default    | Yes       | No     |
-| `typesafe/jev`                  | 32K     | default    | No        | No     |
-| `unbiased/pareto`               | 128K\*  | default    | No        | Yes    |
+| Model             | Context | Max Output | Reasoning | Vision |
+| ----------------- | ------- | ---------- | --------- | ------ |
+| `unbiased/pareto` | 128K\*  | default    | No        | Yes    |
 
 \* The Cloudflare model page does not publish a context window for Pareto, so
 the plugin default (128K) is used. Max output is not published for any of these
@@ -245,8 +242,8 @@ models, so the plugin default is used.
 
 The catalog tracks the Cloudflare Workers AI text-generation models under the
 `workers-ai/@cf/` prefix, including `@cf/zai-org/glm-5.3`,
-`@cf/zai-org/glm-5.3-flash`, `@cf/zai-org/glm-4.7-flash`, `@cf/cloudflare/clef`,
-`@cf/cloudflare/clef-flash`, `@cf/swiss-ai/apertus-v1.5-8b`,
+`@cf/zai-org/glm-5.3-flash`, `@cf/zai-org/glm-4.7-flash`,
+`@cf/swiss-ai/apertus-v1.5-8b`,
 `@cf/utter-project/eurollm-9b-it`, `@cf/ibm-granite/granite-4.0-h-micro`,
 `@cf/aisingapore/gemma-sea-lion-v4-27b-it`,
 `@cf/deepseek-ai/deepseek-r1-distill-qwen-32b`, `@cf/meta/llama-3.1-8b-instruct-fp8`,

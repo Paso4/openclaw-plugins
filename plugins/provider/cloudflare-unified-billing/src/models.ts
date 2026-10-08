@@ -170,8 +170,6 @@ export enum CloudflareUnifiedBillingModel {
   Glm52 = 'workers-ai/@cf/zai-org/glm-5.2',
   DeepseekV4ProWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813',
   DeepseekV4FlashWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731',
-  ClefWorkersAi = 'workers-ai/@cf/cloudflare/clef',
-  ClefFlashWorkersAi = 'workers-ai/@cf/cloudflare/clef-flash',
   Glm47FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-4.7-flash',
   Glm53WorkersAi = 'workers-ai/@cf/zai-org/glm-5.3',
   Glm53FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-5.3-flash',
@@ -220,11 +218,6 @@ export enum CloudflareUnifiedBillingModel {
   // MiniMax
   MiniMaxM3 = 'minimax/m3',
   MiniMaxM27 = 'minimax/m2.7',
-  // Thinking Machines
-  Inkling = 'thinkingmachines/inkling',
-  Inkling256k = 'thinkingmachines/inkling-256k',
-  // TypeSafe
-  Jev = 'typesafe/jev',
   // Unbiased
   Pareto = 'unbiased/pareto',
 }
@@ -1506,24 +1499,6 @@ const workersAiModels: ModelDefinitionConfig[] = [
   // used by the other `workers-ai` entries. The catalog does not publish a max
   // output for them, so the plugin default is used.
   {
-    id: CloudflareUnifiedBillingModel.ClefWorkersAi,
-    name: 'Clef',
-    reasoning: false,
-    input: ['text', 'image'],
-    contextWindow: 65536,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.ClefFlashWorkersAi,
-    name: 'Clef Flash',
-    reasoning: false,
-    input: ['text', 'image'],
-    contextWindow: 65536,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
     id: CloudflareUnifiedBillingModel.Glm47FlashWorkersAi,
     name: 'GLM 4.7 Flash',
     reasoning: true,
@@ -1926,41 +1901,6 @@ const minimaxModels: ModelDefinitionConfig[] = [
   },
 ];
 
-const thinkingMachinesModels: ModelDefinitionConfig[] = [
-  {
-    id: CloudflareUnifiedBillingModel.Inkling,
-    name: 'Inkling',
-
-    reasoning: true,
-    input: ['text'],
-    contextWindow: 64000,
-    maxTokens: 4096,
-    cost: { input: 1.87, output: 4.68, cacheRead: 0.374, cacheWrite: 1.87 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.Inkling256k,
-    name: 'Inkling 256K',
-
-    reasoning: true,
-    input: ['text'],
-    contextWindow: 262144,
-    maxTokens: 4096,
-    cost: { input: 3.74, output: 9.36, cacheRead: 0.748, cacheWrite: 3.74 },
-  },
-];
-
-const typesafeModels: ModelDefinitionConfig[] = [
-  {
-    id: CloudflareUnifiedBillingModel.Jev,
-    name: 'Jev',
-    reasoning: false,
-    input: ['text'],
-    contextWindow: 32000,
-    maxTokens: 4096,
-    cost: { input: 0.042, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-];
-
 const unbiasedModels: ModelDefinitionConfig[] = [
   {
     id: CloudflareUnifiedBillingModel.Pareto,
@@ -1994,8 +1934,6 @@ export const ALL_MODELS: ModelDefinitionConfig[] = [
   ...alibabaModels,
   ...moonshotModels,
   ...minimaxModels,
-  ...thinkingMachinesModels,
-  ...typesafeModels,
   ...unbiasedModels,
 ];
 

@@ -126,8 +126,6 @@ describe('cloudflare-unified-billing provider contract', () => {
             model.id.startsWith('alibaba/') ||
             model.id.startsWith('moonshotai/') ||
             model.id.startsWith('minimax/') ||
-            model.id.startsWith('thinkingmachines/') ||
-            model.id.startsWith('typesafe/') ||
             model.id.startsWith('unbiased/'),
         ).toBe(true);
         expect(model.name).toBeDefined();
@@ -240,7 +238,7 @@ describe('cloudflare-unified-billing provider contract', () => {
       const { ALL_MODELS: models } = await import('./models.js');
       for (const model of models) {
         expect(model.id).toMatch(
-          /^(google|google-vertex-ai|anthropic|openai|xai|grok|groq|mistral|cohere|perplexity|workers-ai|deepseek|cerebras|baseten|parallel|alibaba|moonshotai|minimax|thinkingmachines|typesafe|unbiased)\//,
+          /^(google|google-vertex-ai|anthropic|openai|xai|grok|groq|mistral|cohere|perplexity|workers-ai|deepseek|cerebras|baseten|parallel|alibaba|moonshotai|minimax|unbiased)\//,
         );
         expect(model.id).not.toMatch(/^(claude-|gemini-|gpt-|grok-)/);
       }

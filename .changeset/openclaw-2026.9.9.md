@@ -15,11 +15,12 @@ Cloudflare catalog's dot form (for example `anthropic/claude-sonnet-4.6`
 instead of `anthropic/claude-sonnet-4-6`).
 
 Expands the catalog further with the Cloudflare catalog's new text-generation
-authors — Thinking Machines (`thinkingmachines/inkling`,
-`thinkingmachines/inkling-256k`), TypeSafe (`typesafe/jev`), and Unbiased
-(`unbiased/pareto`) — plus 15 additional Workers AI `@cf/*` text-generation
-models (Clef, GLM 5.3 / 4.7 Flash, Apertus, EuroLLM, Gemma LoRA / SEA-LION,
-Granite, DeepSeek R1 Distill Qwen, and Llama 2 / 3.1 / 3.2 variants). The
-`thinkingmachines/`, `typesafe/`, and `unbiased/` prefixes are added to
-`modelSupport.modelPrefixes`; the Workers AI entries keep the zero cost block
-used by the existing `workers-ai` models.
+author Unbiased (`unbiased/pareto`) plus 13 additional Workers AI `@cf/*`
+text-generation models (GLM 5.3 / 4.7 Flash, Apertus, EuroLLM, Gemma LoRA /
+SEA-LION, Granite, DeepSeek R1 Distill Qwen, and Llama 2 / 3.1 / 3.2 variants).
+The `unbiased/` prefix is added to `modelSupport.modelPrefixes`; the Workers AI
+entries keep the zero cost block used by the existing `workers-ai` models. Only
+OpenAI chat-completions-compatible models are listed — the Cloudflare catalog's
+non-chat models (Thinking Machines Inkling, TypeSafe Jev, and the
+`@cf/cloudflare/clef` decision models) are intentionally excluded because this
+plugin invokes every model through `/chat/completions`.
