@@ -95,7 +95,7 @@ Models are referenced with the `cloudflare-unified-billing/` prefix:
 All requests use the Cloudflare AI Gateway REST API (OpenAI-compatible):
 
 - Base URL: `https://api.cloudflare.com/client/v4/accounts/{account}/ai/v1`
-- Auth: `Authorization: Bearer <CLOUDFLARE_API_TOKEN>`
+- Auth: send the `CLOUDFLARE_API_TOKEN` value as the Bearer `Authorization` header
 - Gateway routing: `cf-aig-gateway-id: <gateway-id>` header (requests route through the configured gateway; if the gateway has unified-billing credits, third-party models are billed to the account)
 - All models use `openai-completions` API
 - Per-model API differences are stripped
@@ -111,8 +111,8 @@ The [AI Gateway User Insights](https://developers.cloudflare.com/ai-gateway/obse
 Custom domains are **not** served by the Cloudflare REST API (`api.cloudflare.com`), so the plugin switches to the AI Gateway endpoint when `CF_AI_GATEWAY_CUSTOM_DOMAIN` is set:
 
 - Base URL: `https://<custom-domain>/compat`
-- With Access: `cf-access-token: <CF_ACCESS_TOKEN>` (AI Gateway records the verified Access subject as `cf.user_id`)
-- Without Access: `Authorization: Bearer <CLOUDFLARE_API_TOKEN>`
+- With Access: send the `CF_ACCESS_TOKEN` value in the `cf-access-token` request header (AI Gateway records the verified Access subject as `cf.user_id`)
+- Without Access: send the `CLOUDFLARE_API_TOKEN` value as the Bearer `Authorization` header
 
 ```bash
 # 1. Create a custom domain on the gateway and put it behind Cloudflare Access.
@@ -242,9 +242,19 @@ This plugin requires the following credentials:
 
 The AI credential must be a real account-level Cloudflare credential with the AI
 Gateway and Workers AI permissions required by the selected REST models. Requests
-are authenticated with `Authorization: Bearer <CLOUDFLARE_API_TOKEN>` against
-`api.cloudflare.com`; the `cf-aig-gateway-id` header routes them through the
-configured gateway for unified billing and logging.
+are authenticated against `api.cloudflare.com` by sending the
+`CLOUDFLARE_API_TOKEN` value as the Bearer `Authorization` header; the
+`cf-aig-gateway-id` header routes them through the configured gateway for unified
+billing and logging.
+
+## Security & data handling
+
+This plugin reads Cloudflare credentials from the environment, the OpenClaw auth
+store, or plugin/provider config, and sends them **only** to Cloudflare — either
+`api.cloudflare.com` or the `CF_AI_GATEWAY_CUSTOM_DOMAIN` you configure. It never
+sends credentials to any other host, and credential-bearing headers are redacted
+from debug logs. See [SECURITY.md](./SECURITY.md) for the full credential and data
+flow.
 
 ## Development
 
