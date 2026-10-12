@@ -4,6 +4,15 @@
 
 ### Patch Changes
 
+- e04b174: Ship the plugin icon at the portable `assets/icon.png` path and include
+  `assets/` in the published package so ClawHub can surface it as the plugin
+  logo. The icon is a 512×512 PNG under the 256 KB cap OpenClaw enforces when it
+  reads a packaged plugin icon.
+
+## 2026.10.2
+
+### Patch Changes
+
 - 74ed117: Migrate the plugin to OpenClaw 2026.10.2. Bumps the global version,
   `minOpenclawVersion`, and the ClawHub `compat`/`build`/`install` metadata to
   2026.10.2.
