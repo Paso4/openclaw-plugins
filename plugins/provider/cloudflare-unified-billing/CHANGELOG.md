@@ -1,6 +1,6 @@
 # @paso4/cloudflare-unified-billing
 
-## 2026.9.9
+## 2026.10.1
 
 ### Patch Changes
 
