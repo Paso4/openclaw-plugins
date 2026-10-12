@@ -15,6 +15,7 @@
   "license": "LicenseRef-Paso4-Open-Plugin-1.0",
   "author": "Paso4",
   "files": [
+    "assets",
     "dist",
     "openclaw.plugin.json"
   ],
