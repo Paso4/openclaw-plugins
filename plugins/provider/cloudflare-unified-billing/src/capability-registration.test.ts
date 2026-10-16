@@ -28,6 +28,13 @@ describe('cloudflare-unified-billing capability registration', () => {
     expect(indexContent).toMatch(/registerImageGenerationProvider\(/);
     expect(capabilitiesContent).toContain(IMAGE_GENERATION_PROVIDER_ID);
   });
+
+  it('implements the awaited readiness hook for image generation', () => {
+    // Credential checks run on the async host resolver; the synchronous hook
+    // stays for released synchronous callers through the 2026-12-31 window.
+    expect(capabilitiesContent).toMatch(/isConfiguredAsync:\s*async/);
+    expect(capabilitiesContent).toMatch(/isConfigured:\s*\(/);
+  });
 });
 
 describe('cloudflare-unified-billing manifest capability contracts', () => {

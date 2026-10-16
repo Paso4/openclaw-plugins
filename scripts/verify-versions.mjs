@@ -22,8 +22,15 @@ const errors = [];
 const rootPkg = JSON.parse(readFileSync(join(REPO_ROOT, 'package.json'), 'utf-8'));
 const globalVersion = String(rootPkg.version ?? '').trim();
 const openclawRaw = rootPkg.catalog?.openclaw;
+// Prerelease targets (e.g. "2026.10.10-beta.1") keep the CalVer base in the
+// global version and in every plugin's OpenClaw compatibility metadata.
 const openclawVersion =
-  typeof openclawRaw === 'string' ? openclawRaw.replace(/^[\^~>=<\s]+/, '').trim() : '';
+  typeof openclawRaw === 'string'
+    ? openclawRaw
+        .replace(/^[\^~>=<\s]+/, '')
+        .trim()
+        .split('-')[0]
+    : '';
 
 if (!/^\d{4}\.\d+\.\d+(?:-\d+)?$/.test(globalVersion)) {
   errors.push(

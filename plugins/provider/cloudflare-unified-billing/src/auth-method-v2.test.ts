@@ -16,13 +16,24 @@ describe('cloudflare-unified-billing auth configuration after refactor', () => {
       expect(indexContent).not.toMatch(/createProviderApiKeyAuthMethod/);
     });
 
-    it('uses ensureAuthProfileStore for profile discovery', () => {
-      // Catalog uses auth profile storage to discover existing profiles
+    it('uses the awaited runtime loader for catalog profile discovery', () => {
+      // Catalog preparation awaits the runtime auth loader (read-only, no
+      // keychain prompt) instead of a synchronous store read.
+      expect(indexContent).toMatch(/loadAuthProfileStoreForRuntimeAsync/);
+      expect(indexContent).toMatch(/readOnly:\s*true/);
+      expect(indexContent).toMatch(/allowKeychainPrompt:\s*false/);
+    });
+
+    it('retains the synchronous loader only for the sync host resolver', () => {
+      // `normalizeResolvedModel` cannot await; the synchronous loader stays
+      // through the 2026-12-31 compatibility window.
       expect(indexContent).toMatch(/ensureAuthProfileStore/);
+      expect(indexContent).toMatch(/normalizeResolvedModel/);
     });
 
     it('imports auth-related SDK helpers for profile discovery', () => {
       expect(indexContent).toMatch(/from\s+['"]openclaw\/plugin-sdk\/provider-auth['"]/);
+      expect(indexContent).toMatch(/from\s+['"]openclaw\/plugin-sdk\/agent-runtime['"]/);
     });
 
     it('relies solely on providerAuthAliases for auth discovery', () => {

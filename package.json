@@ -1,6 +1,6 @@
 {
   "name": "paso4-openclaw-plugins",
-  "version": "2026.10.4",
+  "version": "2026.10.10",
   "private": true,
   "description": "Paso4 public OpenClaw plugins — reusable provider, channel, tool, CLI-backend, and feature plugins published on ClawHub.",
   "keywords": [
@@ -36,13 +36,14 @@
     "@changesets/cli": "^2.29.9",
     "@types/bun": "^1.4.2",
     "clawhub": "^0.23.3",
+    "openclaw": "catalog:",
     "oxfmt": "0.70.0",
     "oxlint": "1.85.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.1"
   },
   "catalog": {
-    "openclaw": "^2026.10.4",
+    "openclaw": "^2026.10.10-beta.1",
     "typescript": "^7.0.2",
     "@types/bun": "latest"
   }
