@@ -1,4 +1,5 @@
 import { definePluginEntry } from 'openclaw/plugin-sdk/plugin-entry';
+import { loadAuthProfileStoreForRuntimeAsync } from 'openclaw/plugin-sdk/agent-runtime';
 import { ensureAuthProfileStore, listProfilesForProvider } from 'openclaw/plugin-sdk/provider-auth';
 import { normalizeOptionalString } from 'openclaw/plugin-sdk/string-coerce-runtime';
 import { buildCatalogProvider } from './catalog-provider.js';
@@ -116,7 +117,11 @@ export default definePluginEntry({
       catalog: {
         order: 'late',
         run: async (ctx) => {
-          const authStore = ensureAuthProfileStore(ctx.agentDir, {
+          // Secret-read preparation awaits the runtime auth loader so the
+          // profile-store read runs on the auth owner's worker (readOnly, no
+          // keychain prompt) instead of synchronously on the Gateway thread.
+          const authStore = await loadAuthProfileStoreForRuntimeAsync(ctx.agentDir, {
+            readOnly: true,
             allowKeychainPrompt: false,
           });
           const envApiKey = normalizeOptionalString(ctx.env[ENV_VAR]);
@@ -209,7 +214,11 @@ export default definePluginEntry({
           processEnvCustomDomain && hasAccessCredentials(processEnvAccess),
         );
 
-        // Try to resolve baseUrl/headers from auth profiles in agentDir
+        // Try to resolve baseUrl/headers from auth profiles in agentDir.
+        // `normalizeResolvedModel` is a released synchronous host resolver and
+        // cannot await, so it retains the synchronous loader through the
+        // 2026-12-31 compatibility window. The awaited loader is used for
+        // catalog preparation above.
         if (ctx.agentDir) {
           const authStore = ensureAuthProfileStore(ctx.agentDir, {
             allowKeychainPrompt: false,
