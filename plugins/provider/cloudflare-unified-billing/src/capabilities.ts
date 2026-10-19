@@ -116,6 +116,16 @@ function isRuntimeConfigured(runtime: UnifiedBillingRuntimeConfig): boolean {
   return Boolean(runtime.baseUrl && (runtime.apiKey || hasAccessCredentials(runtime.access)));
 }
 
+function isImageGenerationConfigured(cfg: OpenClawConfig | undefined): boolean {
+  const runtime = getUnifiedBillingRuntimeConfig({
+    config: cfg,
+    scopedCredentialConfig: cfg?.plugins?.entries?.['cloudflare-unified-billing']?.config as
+      | Record<string, unknown>
+      | undefined,
+  });
+  return isRuntimeConfigured(runtime);
+}
+
 function buildRuntimeHeaders(runtime: UnifiedBillingRuntimeConfig): Record<string, string> {
   return buildGatewayAuthHeaders({
     apiToken: runtime.apiKey,
@@ -344,15 +354,11 @@ export function createImageGenerationProvider(): ImageGenerationProviderPlugin {
         backgrounds: ['transparent', 'opaque', 'auto'],
       },
     },
-    isConfigured: ({ cfg }) => {
-      const runtime = getUnifiedBillingRuntimeConfig({
-        config: cfg,
-        scopedCredentialConfig: cfg?.plugins?.entries?.['cloudflare-unified-billing']?.config as
-          | Record<string, unknown>
-          | undefined,
-      });
-      return isRuntimeConfigured(runtime);
-    },
+    isConfigured: ({ cfg }) => isImageGenerationConfigured(cfg),
+    // Awaited readiness hook: credential inspection belongs to the async host
+    // resolver. The synchronous hook stays through the 2026-12-31 window for
+    // released synchronous callers.
+    isConfiguredAsync: async ({ cfg }) => isImageGenerationConfigured(cfg),
     generateImage: async (req) => {
       const runtime = getUnifiedBillingRuntimeConfig({
         config: req.cfg,
