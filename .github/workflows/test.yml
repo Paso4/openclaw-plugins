@@ -89,7 +89,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          # OpenClaw 2026.10.7 requires Node >=24.22.1 <25 || >=26.12.1.
+          # Pin the exact floor: `node-version: 24` resolves to whatever 24.x the
+          # runner's tool cache offers (24.21.0 at the time of writing), which
+          # fails OpenClaw's preinstall engine gate in the live-test step.
+          node-version: 24.22.1
 
       - uses: oven-sh/setup-bun@v2
         with:
