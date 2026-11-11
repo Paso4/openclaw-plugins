@@ -22,6 +22,7 @@ export const PROVIDER_ID = 'cloudflare-unified-billing';
 
 export enum CloudflareUnifiedBillingModel {
   // Google AI Studio
+  Gemini4Argon = 'google/gemini-4-argon',
   Gemini31FlashLite = 'google/gemini-3.1-flash-lite',
   Gemini31FlashImagePreview = 'google/gemini-3.1-flash-image-preview',
   Gemini31ProPreview = 'google/gemini-3.1-pro-preview',
@@ -225,6 +226,16 @@ export enum CloudflareUnifiedBillingModel {
 export const DEFAULT_MODEL_REF = `${PROVIDER_ID}/${CloudflareUnifiedBillingModel.ClaudeSonnet46}`;
 
 const googleModels: ModelDefinitionConfig[] = [
+  {
+    id: CloudflareUnifiedBillingModel.Gemini4Argon,
+    name: 'Gemini 4 Argon',
+
+    reasoning: true,
+    input: ['text', 'image'],
+    contextWindow: 1048576,
+    maxTokens: 65536,
+    cost: { input: 2.0, output: 10.0, cacheRead: 0.1, cacheWrite: 0 },
+  },
   {
     id: CloudflareUnifiedBillingModel.Gemini38Flash,
     name: 'Gemini 3.8 Flash',
