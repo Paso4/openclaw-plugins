@@ -224,7 +224,9 @@ The catalog also includes DeepSeek (`deepseek/deepseek-v4-pro`), Alibaba Qwen
 (`alibaba/qwen3.8-max`, `qwen3.7-max`, `qwen3.7-plus`, `qwen3.5-397b-a17b`,
 `qwen3-max`), Moonshot (`moonshotai/kimi-k3`, `moonshotai/kimi-k2.6`,
 `moonshotai/kimi-k2.7-code`), MiniMax (`minimax/m3`, `minimax/m2.7`), Google
-Gemma 4 (`google/gemma-4-26b-a4b-it`), plus the Groq, Mistral, Cohere,
+Gemma 4 (`google/gemma-4-26b-a4b-it`), Workers AI frontier models
+(`workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017`,
+`workers-ai/@cf/zai-org/glm-5.3`), plus the Groq, Mistral, Cohere,
 Perplexity, Cerebras, Baseten, and Parallel families. See `src/models.ts` for
 the full list and pricing.
 
@@ -242,16 +244,24 @@ models, so the plugin default is used.
 
 The catalog tracks the Cloudflare Workers AI text-generation models under the
 `workers-ai/@cf/` prefix, including `@cf/zai-org/glm-5.3`,
-`@cf/zai-org/glm-5.3-flash`, `@cf/zai-org/glm-4.7-flash`,
-`@cf/swiss-ai/apertus-v1.5-8b`,
-`@cf/utter-project/eurollm-9b-it`, `@cf/ibm-granite/granite-4.0-h-micro`,
-`@cf/aisingapore/gemma-sea-lion-v4-27b-it`,
-`@cf/deepseek-ai/deepseek-r1-distill-qwen-32b`, `@cf/meta/llama-3.1-8b-instruct-fp8`,
-`@cf/meta/llama-3.2-11b-vision-instruct`, `@cf/google/gemma-2b-it-lora`,
-`@cf/google/gemma-7b-it-lora`, `@cf/meta-llama/llama-2-7b-chat-hf-lora`,
-`@cf/zai-org/glm-5.2`, `@cf/moonshotai/kimi-k2.6`,
-`@cf/moonshotai/kimi-k2.7-code`, and `@cf/deepseek-ai/deepseek-v4-pro-0813`.
-Workers AI is billed per neuron, so these entries carry a zero cost block.
+`@cf/zai-org/glm-4.7-flash`, `@cf/deepseek-ai/deepseek-v4.1-flash-1017`,
+`@cf/google/gemma-4-26b-a4b-it`, `@cf/qwen/qwen3.8-27b`,
+`@cf/swiss-ai/apertus-v1.5-8b`, `@cf/utter-project/eurollm-9b-it`,
+`@cf/ibm-granite/granite-4.0-h-micro`,
+`@cf/aisingapore/gemma-sea-lion-v4-27b-it`, and
+`@cf/meta/llama-3.2-11b-vision-instruct`. Workers AI is billed per neuron, so
+these entries carry a zero cost block.
+
+The catalog drops the Workers AI models Cloudflare retires on **2026-11-20**
+(HTTP `410` / error `5028`): `@cf/moonshotai/kimi-k2.6`,
+`@cf/moonshotai/kimi-k2.7-code`, `@cf/zai-org/glm-5.2`,
+`@cf/zai-org/glm-5.3-flash`, `@cf/deepseek-ai/deepseek-v4-pro-0813`,
+`@cf/deepseek-ai/deepseek-v4-flash-0731`,
+`@cf/deepseek-ai/deepseek-r1-distill-qwen-32b`,
+`@cf/meta-llama/llama-2-7b-chat-hf-lora`, `@cf/google/gemma-2b-it-lora`,
+`@cf/google/gemma-7b-it-lora`, and `@cf/meta/llama-3.1-8b-instruct-fp8`. Use the
+recommended replacements above (or `@cf/zai-org/glm-5.3`, already listed). See
+the [Cloudflare deprecation notice](https://developers.cloudflare.com/changelog/post/2026-11-05-planned-model-deprecations/).
 
 ## Cloudflare API Token Permissions
 

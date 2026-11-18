@@ -249,10 +249,22 @@ describe('cloudflare-unified-billing catalog expansion (Workers AI)', () => {
       contextWindow: 1048576,
     },
     {
-      id: 'workers-ai/@cf/zai-org/glm-5.3-flash',
+      id: 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
       reasoning: true,
       input: ['text', 'image'],
       contextWindow: 1048576,
+    },
+    {
+      id: 'workers-ai/@cf/google/gemma-4-26b-a4b-it',
+      reasoning: true,
+      input: ['text', 'image'],
+      contextWindow: 256000,
+    },
+    {
+      id: 'workers-ai/@cf/qwen/qwen3.8-27b',
+      reasoning: true,
+      input: ['text', 'image'],
+      contextWindow: 262144,
     },
     {
       id: 'workers-ai/@cf/swiss-ai/apertus-v1.5-8b',
@@ -267,18 +279,6 @@ describe('cloudflare-unified-billing catalog expansion (Workers AI)', () => {
       contextWindow: 32000,
     },
     {
-      id: 'workers-ai/@cf/google/gemma-2b-it-lora',
-      reasoning: false,
-      input: ['text'],
-      contextWindow: 8192,
-    },
-    {
-      id: 'workers-ai/@cf/google/gemma-7b-it-lora',
-      reasoning: false,
-      input: ['text'],
-      contextWindow: 3500,
-    },
-    {
       id: 'workers-ai/@cf/aisingapore/gemma-sea-lion-v4-27b-it',
       reasoning: false,
       input: ['text'],
@@ -289,24 +289,6 @@ describe('cloudflare-unified-billing catalog expansion (Workers AI)', () => {
       reasoning: false,
       input: ['text'],
       contextWindow: 131000,
-    },
-    {
-      id: 'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
-      reasoning: true,
-      input: ['text'],
-      contextWindow: 80000,
-    },
-    {
-      id: 'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
-      reasoning: false,
-      input: ['text'],
-      contextWindow: 8192,
-    },
-    {
-      id: 'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
-      reasoning: false,
-      input: ['text'],
-      contextWindow: 32000,
     },
     {
       id: 'workers-ai/@cf/meta/llama-3.2-11b-vision-instruct',
@@ -324,5 +306,37 @@ describe('cloudflare-unified-billing catalog expansion (Workers AI)', () => {
     expect(model?.reasoning).toBe(entry.reasoning);
     expect(model?.input).toEqual(entry.input);
     expect(model?.cost).toEqual({ input: 0, output: 0, cacheRead: 0, cacheWrite: 0 });
+  });
+});
+
+// ── Workers AI deprecations (2026-11-20) ────────────────────────────────────
+// Cloudflare retires these models on 2026-11-20; requests then fail with HTTP
+// 410 / error 5028. They must not be advertised by the catalog.
+// https://developers.cloudflare.com/changelog/post/2026-11-05-planned-model-deprecations/
+describe('cloudflare-unified-billing Workers AI deprecations (2026-11-20)', () => {
+  const retired = [
+    'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
+    'workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813',
+    'workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731',
+    'workers-ai/@cf/moonshotai/kimi-k2.6',
+    'workers-ai/@cf/moonshotai/kimi-k2.7-code',
+    'workers-ai/@cf/zai-org/glm-5.2',
+    'workers-ai/@cf/zai-org/glm-5.3-flash',
+    'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
+    'workers-ai/@cf/google/gemma-2b-it-lora',
+    'workers-ai/@cf/google/gemma-7b-it-lora',
+    'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
+  ];
+
+  it.each(retired)('omits %s from the catalog', (id) => {
+    expect(ALL_MODELS.find((m: any) => m.id === id)).toBeUndefined();
+  });
+
+  it('keeps the recommended replacements in the catalog', () => {
+    const ids = ALL_MODELS.map((m: any) => m.id);
+    expect(ids).toContain('workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017');
+    expect(ids).toContain('workers-ai/@cf/zai-org/glm-5.3');
+    expect(ids).toContain('workers-ai/@cf/google/gemma-4-26b-a4b-it');
+    expect(ids).toContain('workers-ai/@cf/qwen/qwen3.8-27b');
   });
 });
