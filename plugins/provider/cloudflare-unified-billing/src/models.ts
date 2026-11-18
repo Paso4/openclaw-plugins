@@ -166,24 +166,43 @@ export enum CloudflareUnifiedBillingModel {
   Qwen25Coder32b = 'workers-ai/@cf/qwen/qwen2-5-coder-32b',
   DistilbertSst2Int8 = 'workers-ai/@cf/huggingface/distilbert-sst-2-int8',
   BgeLargeEn15 = 'workers-ai/@cf/bge/large-en-1.5',
-  KimiK26WorkersAi = 'workers-ai/@cf/moonshotai/kimi-k2.6',
-  KimiK27CodeWorkersAi = 'workers-ai/@cf/moonshotai/kimi-k2.7-code',
-  Glm52 = 'workers-ai/@cf/zai-org/glm-5.2',
-  DeepseekV4ProWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813',
-  DeepseekV4FlashWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731',
   Glm47FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-4.7-flash',
   Glm53WorkersAi = 'workers-ai/@cf/zai-org/glm-5.3',
-  Glm53FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-5.3-flash',
+  DeepseekV41FlashWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4.1-flash-1017',
+  Gemma426bA4bItWorkersAi = 'workers-ai/@cf/google/gemma-4-26b-a4b-it',
+  Qwen38_27bWorkersAi = 'workers-ai/@cf/qwen/qwen3.8-27b',
   Apertus15_8bWorkersAi = 'workers-ai/@cf/swiss-ai/apertus-v1.5-8b',
   Eurollm9bItWorkersAi = 'workers-ai/@cf/utter-project/eurollm-9b-it',
-  Gemma2bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-2b-it-lora',
-  Gemma7bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-7b-it-lora',
   GemmaSeaLionV4_27bItWorkersAi = 'workers-ai/@cf/aisingapore/gemma-sea-lion-v4-27b-it',
   Granite40HMicroWorkersAi = 'workers-ai/@cf/ibm-granite/granite-4.0-h-micro',
-  DeepseekR1DistillQwen32bWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
-  Llama27bChatHfLoraWorkersAi = 'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
-  Llama318bInstructFp8WorkersAi = 'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
   Llama3211bVisionInstructWorkersAi = 'workers-ai/@cf/meta/llama-3.2-11b-vision-instruct',
+
+  // Workers AI models retired on 2026-11-20 (HTTP 410 / error 5028). They stay
+  // in the enum so existing model refs remain source-compatible, but they are
+  // excluded from ALL_MODELS so OpenClaw no longer advertises them.
+  // https://developers.cloudflare.com/changelog/post/2026-11-05-planned-model-deprecations/
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  KimiK26WorkersAi = 'workers-ai/@cf/moonshotai/kimi-k2.6',
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  KimiK27CodeWorkersAi = 'workers-ai/@cf/moonshotai/kimi-k2.7-code',
+  /** @deprecated Retired by Workers AI on 2026-11-20. Use Glm53WorkersAi. */
+  Glm52 = 'workers-ai/@cf/zai-org/glm-5.2',
+  /** @deprecated Retired by Workers AI on 2026-11-20. Use DeepseekV41FlashWorkersAi. */
+  DeepseekV4ProWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813',
+  /** @deprecated Retired by Workers AI on 2026-11-20. Use DeepseekV41FlashWorkersAi. */
+  DeepseekV4FlashWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731',
+  /** @deprecated Retired by Workers AI on 2026-11-20. Use Glm53WorkersAi. */
+  Glm53FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-5.3-flash',
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  Gemma2bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-2b-it-lora',
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  Gemma7bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-7b-it-lora',
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  DeepseekR1DistillQwen32bWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  Llama27bChatHfLoraWorkersAi = 'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
+  /** @deprecated Retired by Workers AI on 2026-11-20. */
+  Llama318bInstructFp8WorkersAi = 'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
   // DeepSeek
   DeepseekChat = 'deepseek/deepseek-chat',
   DeepseekCoder = 'deepseek/deepseek-coder',
@@ -1365,54 +1384,35 @@ const perplexityModels: ModelDefinitionConfig[] = [
 ];
 
 const workersAiModels: ModelDefinitionConfig[] = [
+  // 2026-11-20 Workers AI refresh: the retired frontier models are replaced by
+  // these catalog entries. Workers AI bills per neuron, so they keep the zero
+  // cost block; the model pages do not publish a max output, so the plugin
+  // default (4096) is used.
   {
-    id: CloudflareUnifiedBillingModel.KimiK26WorkersAi,
-    name: 'Kimi K2.6',
-
+    id: CloudflareUnifiedBillingModel.DeepseekV41FlashWorkersAi,
+    name: 'DeepSeek V4.1 Flash',
     reasoning: true,
-    input: ['text'],
-    contextWindow: 262144,
-    maxTokens: 8192,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.KimiK27CodeWorkersAi,
-    name: 'Kimi K2.7 Code',
-
-    reasoning: true,
-    input: ['text'],
-    contextWindow: 262144,
-    maxTokens: 8192,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.Glm52,
-    name: 'GLM 5.2',
-
-    reasoning: true,
-    input: ['text'],
-    contextWindow: 262144,
-    maxTokens: 8192,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.DeepseekV4ProWorkersAi,
-    name: 'DeepSeek V4 Pro (Workers AI)',
-
-    reasoning: true,
-    input: ['text'],
+    input: ['text', 'image'],
     contextWindow: 1048576,
-    maxTokens: 8192,
+    maxTokens: 4096,
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
   {
-    id: CloudflareUnifiedBillingModel.DeepseekV4FlashWorkersAi,
-    name: 'DeepSeek V4 Flash (Workers AI)',
-
+    id: CloudflareUnifiedBillingModel.Gemma426bA4bItWorkersAi,
+    name: 'Gemma 4 26B A4B IT',
     reasoning: true,
-    input: ['text'],
-    contextWindow: 1048576,
-    maxTokens: 8192,
+    input: ['text', 'image'],
+    contextWindow: 256000,
+    maxTokens: 4096,
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+  },
+  {
+    id: CloudflareUnifiedBillingModel.Qwen38_27bWorkersAi,
+    name: 'Qwen 3.8 27B',
+    reasoning: true,
+    input: ['text', 'image'],
+    contextWindow: 262144,
+    maxTokens: 4096,
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
   {
@@ -1528,15 +1528,6 @@ const workersAiModels: ModelDefinitionConfig[] = [
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
   {
-    id: CloudflareUnifiedBillingModel.Glm53FlashWorkersAi,
-    name: 'GLM 5.3 Flash',
-    reasoning: true,
-    input: ['text', 'image'],
-    contextWindow: 1048576,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
     id: CloudflareUnifiedBillingModel.Apertus15_8bWorkersAi,
     name: 'Apertus 1.5 8B',
     reasoning: false,
@@ -1555,24 +1546,6 @@ const workersAiModels: ModelDefinitionConfig[] = [
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
   {
-    id: CloudflareUnifiedBillingModel.Gemma2bItLoraWorkersAi,
-    name: 'Gemma 2B IT LoRA',
-    reasoning: false,
-    input: ['text'],
-    contextWindow: 8192,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.Gemma7bItLoraWorkersAi,
-    name: 'Gemma 7B IT LoRA',
-    reasoning: false,
-    input: ['text'],
-    contextWindow: 3500,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
     id: CloudflareUnifiedBillingModel.GemmaSeaLionV4_27bItWorkersAi,
     name: 'Gemma Sea Lion V4 27B IT',
     reasoning: false,
@@ -1587,33 +1560,6 @@ const workersAiModels: ModelDefinitionConfig[] = [
     reasoning: false,
     input: ['text'],
     contextWindow: 131000,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.DeepseekR1DistillQwen32bWorkersAi,
-    name: 'DeepSeek R1 Distill Qwen 32B',
-    reasoning: true,
-    input: ['text'],
-    contextWindow: 80000,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.Llama27bChatHfLoraWorkersAi,
-    name: 'Llama 2 7B Chat HF LoRA',
-    reasoning: false,
-    input: ['text'],
-    contextWindow: 8192,
-    maxTokens: 4096,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: CloudflareUnifiedBillingModel.Llama318bInstructFp8WorkersAi,
-    name: 'Llama 3.1 8B Instruct FP8',
-    reasoning: false,
-    input: ['text'],
-    contextWindow: 32000,
     maxTokens: 4096,
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
