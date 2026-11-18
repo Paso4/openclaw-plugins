@@ -19,8 +19,9 @@ carried:
 - `@cf/google/gemma-2b-it-lora`, `@cf/google/gemma-7b-it-lora`
 - `@cf/meta/llama-3.1-8b-instruct-fp8`
 
-The deprecated enum values stay in `CloudflareUnifiedBillingModel` so existing
-model refs remain source-compatible, but they are excluded from `ALL_MODELS`.
+The retired entries are removed from the catalog entirely — both the
+`CloudflareUnifiedBillingModel` enum and `ALL_MODELS` — so no deprecated model
+appears in the plugin catalog.
 
 Adds the recommended replacements (Workers AI unit pricing is billed per
 neuron, so they keep the zero cost block; max output is not published on the

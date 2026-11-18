@@ -176,33 +176,6 @@ export enum CloudflareUnifiedBillingModel {
   GemmaSeaLionV4_27bItWorkersAi = 'workers-ai/@cf/aisingapore/gemma-sea-lion-v4-27b-it',
   Granite40HMicroWorkersAi = 'workers-ai/@cf/ibm-granite/granite-4.0-h-micro',
   Llama3211bVisionInstructWorkersAi = 'workers-ai/@cf/meta/llama-3.2-11b-vision-instruct',
-
-  // Workers AI models retired on 2026-11-20 (HTTP 410 / error 5028). They stay
-  // in the enum so existing model refs remain source-compatible, but they are
-  // excluded from ALL_MODELS so OpenClaw no longer advertises them.
-  // https://developers.cloudflare.com/changelog/post/2026-11-05-planned-model-deprecations/
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  KimiK26WorkersAi = 'workers-ai/@cf/moonshotai/kimi-k2.6',
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  KimiK27CodeWorkersAi = 'workers-ai/@cf/moonshotai/kimi-k2.7-code',
-  /** @deprecated Retired by Workers AI on 2026-11-20. Use Glm53WorkersAi. */
-  Glm52 = 'workers-ai/@cf/zai-org/glm-5.2',
-  /** @deprecated Retired by Workers AI on 2026-11-20. Use DeepseekV41FlashWorkersAi. */
-  DeepseekV4ProWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-pro-0813',
-  /** @deprecated Retired by Workers AI on 2026-11-20. Use DeepseekV41FlashWorkersAi. */
-  DeepseekV4FlashWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-v4-flash-0731',
-  /** @deprecated Retired by Workers AI on 2026-11-20. Use Glm53WorkersAi. */
-  Glm53FlashWorkersAi = 'workers-ai/@cf/zai-org/glm-5.3-flash',
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  Gemma2bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-2b-it-lora',
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  Gemma7bItLoraWorkersAi = 'workers-ai/@cf/google/gemma-7b-it-lora',
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  DeepseekR1DistillQwen32bWorkersAi = 'workers-ai/@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  Llama27bChatHfLoraWorkersAi = 'workers-ai/@cf/meta-llama/llama-2-7b-chat-hf-lora',
-  /** @deprecated Retired by Workers AI on 2026-11-20. */
-  Llama318bInstructFp8WorkersAi = 'workers-ai/@cf/meta/llama-3.1-8b-instruct-fp8',
   // DeepSeek
   DeepseekChat = 'deepseek/deepseek-chat',
   DeepseekCoder = 'deepseek/deepseek-coder',
